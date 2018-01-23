@@ -102,6 +102,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v1.0.2 [2018-01-23]: Updated Readme.
+- v1.0.1 [2018-01-23]: Updated NSP link.
 - v1.0.0 [2018-01-23]: Initial release. 
 
 [bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-console-probe/badges/score.svg
