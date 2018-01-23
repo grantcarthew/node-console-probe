@@ -62,6 +62,10 @@ console.probe(donut)
 
 ```
 
+The above code will produce the following result in the console:
+
+![Example][example-image]
+
 ## Rational
 
 Sometimes I am not using Node.js with inspect and just want to console out the methods and properties of an object. I wrote this for those odd times.
@@ -119,3 +123,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [nodei-npm-url]: https://nodei.co/npm/mppg/
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
+[example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/42294bfa/example.png
