@@ -119,8 +119,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [nsp-url]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
-[nodei-npm-image]: https://nodei.co/npm/mppg.png?downloads=true&downloadRank=true&stars=true
-[nodei-npm-url]: https://nodei.co/npm/mppg/
+[nodei-npm-image]: https://nodei.co/npm/console-probe.png?downloads=true&downloadRank=true&stars=true
+[nodei-npm-url]: https://nodei.co/npm/console-probe/
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
 [example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/42294bfa/example.png
