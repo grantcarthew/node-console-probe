@@ -2,5 +2,8 @@
   "ignore": [
     "**/node_modules/**",
     "index.js"
-  ]
+  ],
+  "critics": {
+    "lint": {"engine": "standard"}
+  }
 }
