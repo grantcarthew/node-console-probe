@@ -115,8 +115,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [mppg-url]: https://github.com/grantcarthew/node-console-probe
 [bithound-code-image]: https://www.bithound.io/github/grantcarthew/node-console-probe/badges/code.svg
 [bithound-code-url]: https://www.bithound.io/github/grantcarthew/node-console-probe
-[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d/badge
-[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d
+[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/8559f978-a8a7-4f6a-afdc-49bb319ad947/badge
+[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/8559f978-a8a7-4f6a-afdc-49bb319ad947
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
 [nodei-npm-image]: https://nodei.co/npm/console-probe.png?downloads=true&downloadRank=true&stars=true

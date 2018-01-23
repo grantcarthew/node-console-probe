@@ -1,6 +1,6 @@
 {
   "name": "console-probe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Probe an object to discover its properties and methods in the console.",
   "main": "console-probe.js",
   "scripts": {
