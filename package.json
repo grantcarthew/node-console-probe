@@ -1,6 +1,6 @@
 {
   "name": "console-probe",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Probe an object to discover its properties and methods in the console.",
   "main": "console-probe.js",
   "scripts": {
@@ -8,7 +8,11 @@
     "test": "jest",
     "watch": "jest --watch",
     "lint": "standard",
-    "build": "npm run clean && standard && babel console-probe.js --out-file index.js && npm test"
+    "build": "npm run clean && standard && babel console-probe.js --out-file index.js && npm test",
+    "upgrade": "npm run upgrade:rm && npm run upgrade:ncu && npm run upgrade:npm-install",
+    "upgrade:rm": "rm node_modules -Rf",
+    "upgrade:ncu": "npm-check-updates --upgradeAll",
+    "upgrade:npm-install": "npm install"
   },
   "keywords": [
     "console",
