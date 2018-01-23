@@ -1,0 +1,42 @@
+{
+  "name": "console-probe",
+  "version": "0.1.0",
+  "description": "Probe an object to discover its properties and methods in the console.",
+  "main": "console-probe.js",
+  "scripts": {
+    "clean": "del index.js",
+    "test": "jest",
+    "watch": "jest --watch",
+    "lint": "standard",
+    "build": "npm run clean && standard && babel console-probe.js --out-file index.js && npm test"
+  },
+  "keywords": [
+    "console",
+    "object",
+    "inspect",
+    "probe",
+    "discover",
+    "api"
+  ],
+  "author": "Grant Carthew",
+  "license": "MIT",
+  "standard": {
+    "globals": [
+      "test",
+      "expect",
+      "jest"
+    ]
+  },
+  "dependencies": {
+    "archy": "^1.0.0",
+    "chalk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "del-cli": "^1.1.0",
+    "jest": "^22.1.4",
+    "standard": "^10.0.3",
+    "npm-check-updates": "^2.14.0"
+  }
+}
