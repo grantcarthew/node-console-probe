@@ -25,6 +25,9 @@
       "test",
       "expect",
       "jest"
+    ],
+    "ignore": [
+      "index.js"
     ]
   },
   "dependencies": {
