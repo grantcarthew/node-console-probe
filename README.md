@@ -1,6 +1,6 @@
 # console-probe
 
-Inspect JavaScript objects methods and properties in the console.
+Inspect JavaScript object methods and properties in the console.
 
 [![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
 [![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
