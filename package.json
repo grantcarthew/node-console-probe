@@ -1,8 +1,12 @@
 {
   "name": "console-probe",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Inspect JavaScript object methods and properties in the console.",
   "main": "console-probe.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grantcarthew/node-console-probe.git"
+  },
   "scripts": {
     "clean": "del index.js",
     "test": "jest",

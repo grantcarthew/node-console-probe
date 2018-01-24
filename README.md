@@ -154,6 +154,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v2.0.1 [2018-01-25]: Added repository url to package.json.
 - v2.0.0 [2018-01-24]: Changed API. Improved type support.
 - v1.0.2 [2018-01-23]: Updated Readme.
 - v1.0.1 [2018-01-23]: Updated NSP link.
