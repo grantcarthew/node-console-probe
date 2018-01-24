@@ -1,4 +1,4 @@
-require('./index')
+const probe = require('./index')
 
 const donut = {
   'id': '0001',
@@ -28,8 +28,59 @@ const donut = {
   ]
 }
 
-test('console-probe gets called by console.probe', () => {
-  const spy = jest.spyOn(console, 'log')
-  console.probe(donut)
-  expect(spy).toHaveBeenCalled()
+describe('suppressed log tests', () => {
+  const spyLog = jest.fn()
+  const consoleLog = console.log
+
+  beforeAll(() => {
+    console.log = spyLog
+  })
+
+  test('console-probe called by console.probe', () => {
+    expect(() => console.probe()).toThrow()
+    probe.apply()
+    console.probe(donut)
+    expect(spyLog).toHaveBeenCalled()
+  })
+
+  test('console-probe appended to another object', () => {
+    const thing = {}
+    expect(() => thing.probe()).toThrow()
+    probe.apply(thing)
+    const probeSpy = jest.spyOn(thing, 'probe')
+    thing.probe(donut)
+    expect(probeSpy).toHaveBeenCalled()
+  })
+
+  test('console-probe stand-alone function', () => {
+    const probeFunc = probe.get()
+    expect(typeof probeFunc).toBe('function')
+    expect(probeFunc).toBe(console.probe)
+    expect(probeFunc.toString()).toBe(console.probe.toString())
+  })
+
+  test('console-probe type support', () => {
+    const probeFunc = probe.get()
+    expect(() => { probeFunc() }).not.toThrow()
+    expect(() => { probeFunc(null) }).not.toThrow()
+    expect(() => { probeFunc(undefined) }).not.toThrow()
+    expect(() => { probeFunc(function name () {}) }).not.toThrow()
+    expect(() => { probeFunc(() => {}) }).not.toThrow()
+    expect(() => { probeFunc(probeFunc) }).not.toThrow()
+    expect(() => { probeFunc(1) }).not.toThrow()
+    expect(() => { probeFunc(-1) }).not.toThrow()
+    expect(() => { probeFunc(0) }).not.toThrow()
+    expect(() => { probeFunc('') }).not.toThrow()
+    expect(() => { probeFunc([]) }).not.toThrow()
+    expect(() => { probeFunc({}) }).not.toThrow()
+    expect(() => { probeFunc(true) }).not.toThrow()
+  })
+
+  afterAll(() => {
+    console.log = consoleLog
+  })
+})
+
+afterAll(() => {
+  probe.get()(donut)
 })

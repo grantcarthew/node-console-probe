@@ -11,7 +11,7 @@ Inspect JavaScript object methods and properties in the console.
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-Adds a `console.probe()` function to the global `console` object to inspect JavaScript objects. Outputs a tree including the parent objects properties and methods down through the prototype hierarchy.
+Provides a `probe()` function to inspect JavaScript objects. Outputs a tree including the parent object properties and methods down through the prototype hierarchy.
 
 ## Installing
 
@@ -28,7 +28,7 @@ __Not recommended for production environments__
 
 ```js
 
-require('./console-probe')
+const probe = require('./console-probe')
 
 const donut = {
   'id': '0001',
@@ -58,11 +58,21 @@ const donut = {
   ]
 }
 
-console.probe(donut)
+
+console.probe(donut) // Throws exception 'console.probe is not a function'
+probe.apply()
+console.probe(donut) // Writes to the console
+
+const foo = {}
+probe.apply(foo)
+foo.probe(donut) // Writes to the console
+
+const probeFunc = probe.get()
+probeFunc(donut) // Writes to the console
 
 ```
 
-The above code will produce the following result in the console:
+The above code will produce the following result when it writes to the console:
 
 ![Example][example-image]
 
@@ -72,11 +82,53 @@ Sometimes I am not using Node.js with inspect and just want to console out the m
 
 ## Function
 
-Behind the scenes `console-probe` is adding a function to the console object (monkey patching). This function uses `Object.getOwnPropertyNames()` to enumerate the members of an object. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
+Depending on how you initialize `console-probe` it will either monkey patch the console, monkey patch an object, or provide a function. This function uses `Object.getOwnPropertyNames()` to enumerate the members of an object. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
 
 ## API
 
-`console.probe(Object)` will write an inspection of the object to the console.
+
+#### Apply
+
+Using the `apply` function will either add a `probe` function to the console or a custom object:
+
+```js
+
+const probe = require('console-probe')
+const foo = {}
+const bar = {}
+
+// Adds a new function to the global console object.
+probe.apply()
+console.probe(bar)
+
+// Adds a new function to the passed object.
+probe.apply(foo)
+foo.probe(bar)
+
+```
+
+Another approach:
+
+```js
+
+require('console-probe').apply()
+
+```
+
+#### Get
+
+Calling the `get` function simply returns the `probe` function for you to use how you see fit:
+
+```js
+
+const probe = require('console-probe')
+const bar = {}
+
+// Returns the probe function.
+const probeFunc = probe.get()
+probeFunc(bar)
+
+```
 
 ## About the Owner
 
@@ -102,6 +154,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v2.0.0 [2018-01-24]: Changed API. Improved type support.
 - v1.0.2 [2018-01-23]: Updated Readme.
 - v1.0.1 [2018-01-23]: Updated NSP link.
 - v1.0.0 [2018-01-23]: Initial release. 

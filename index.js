@@ -3,18 +3,39 @@
 var archy = require('archy');
 var chalk = require('chalk');
 
-console.probe = function genProbe(obj) {
+module.exports = Object.freeze({
+  apply(obj) {
+    if (obj == null) {
+      global.console.probe = probe;
+    } else {
+      obj.probe = probe;
+    }
+  },
+  get() {
+    return probe;
+  }
+});
+
+function probe(obj) {
+  if (obj == null) {
+    console.log(obj);
+    return;
+  }
+
   var tree = null;
   var currentNode = newNode('root');
 
   for (; obj != null; obj = Object.getPrototypeOf(obj)) {
-    var node = newNode(chalk.red(`[${obj.constructor.name}]`));
+    var node = newNode(genHeader(obj));
     node.nodes = Object.getOwnPropertyNames(obj);
 
     for (var i = 0; i < node.nodes.length; i++) {
-      var type = typeof obj[node.nodes[i]];
+      var type = '---';
+      try {
+        type = typeof obj[node.nodes[i]];
+      } catch (err) {}
       var prefix = genPrefix(type);
-      var postfix = type === 'function' ? genPostfix(obj, node.nodes[i]) : '';
+      var postfix = type === 'function' ? genSignature(obj[node.nodes[i]].toString()) : '';
       node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`;
     }
 
@@ -24,7 +45,7 @@ console.probe = function genProbe(obj) {
     currentNode = node;
   }
   console.log(archy(tree));
-};
+}
 
 function newNode(label) {
   return {
@@ -33,8 +54,29 @@ function newNode(label) {
   };
 }
 
+function genHeader(obj) {
+  var constName = obj.constructor.name ? obj.constructor.name : '';
+  var objName = obj.name ? obj.name : '';
+  var objSignature = genSignature(obj.toString());
+  var header = '[';
+  if (constName.length > 0) {
+    header += `${capitalize(constName)}]`;
+  } else {
+    header += `${capitalize(typeof obj)}]`;
+  }
+  header = chalk.red(header);
+  if (objName.length > 0) header += ` ${objName}`;
+  if (objSignature.length > 0) header += ` ${objSignature}`;
+  return header;
+}
+
+function capitalize(value) {
+  value = value.toLowerCase();
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
 function genPrefix(value) {
-  var result = `[${value.slice(0, 3)}]`;
+  var result = `[${value.slice(0, 3)}]`.toLowerCase();
   switch (result) {
     case '[fun]':
       result = chalk.green(result);
@@ -57,8 +99,6 @@ function genPrefix(value) {
   return result;
 }
 
-function genPostfix(obj, functionName) {
-  var signature = obj[functionName].toString();
-  signature = signature.slice(signature.indexOf('('), signature.indexOf(')') + 1);
-  return signature;
+function genSignature(functionString) {
+  return functionString.slice(functionString.indexOf('('), functionString.indexOf(')') + 1);
 }
