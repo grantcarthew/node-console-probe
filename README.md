@@ -34,6 +34,7 @@ const donut = {
   'id': '0001',
   'type': 'donut',
   'name': 'Cake',
+  'description': 'A small fried cake of sweetened dough, typically in the shape of a ball or ring.',
   'ppu': 0.55,
   'common': true,
   'batters':
@@ -55,9 +56,11 @@ const donut = {
     { 'id': '5006', 'type': 'Chocolate with Sprinkles' },
     { 'id': '5003', 'type': 'Chocolate' },
     { 'id': '5004', 'type': 'Maple' }
-  ]
+  ],
+  'addToCart': function addToCart (id, quantity) {},
+  'removeFromCart': (id, quantity) => {},
+  'holeContents': null
 }
-
 
 console.probe(donut) // Throws exception 'console.probe is not a function'
 probe.apply()
@@ -75,6 +78,8 @@ probeFunc(donut) // Writes to the console
 The above code will produce the following result when it writes to the console:
 
 ![Example][example-image]
+
+_Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
 
 ## Rational
 
@@ -154,6 +159,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v2.0.2 [2018-01-26]: Addes support for arrays and values. Fixed sort.
 - v2.0.1 [2018-01-25]: Added repository url to package.json.
 - v2.0.0 [2018-01-24]: Changed API. Improved type support.
 - v1.0.2 [2018-01-23]: Updated Readme.

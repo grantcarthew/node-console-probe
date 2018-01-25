@@ -4,6 +4,7 @@ const donut = {
   'id': '0001',
   'type': 'donut',
   'name': 'Cake',
+  'description': 'A small fried cake of sweetened dough, typically in the shape of a ball or ring.',
   'ppu': 0.55,
   'common': true,
   'batters':
@@ -25,7 +26,10 @@ const donut = {
     { 'id': '5006', 'type': 'Chocolate with Sprinkles' },
     { 'id': '5003', 'type': 'Chocolate' },
     { 'id': '5004', 'type': 'Maple' }
-  ]
+  ],
+  'addToCart': function addToCart (id, quantity) {},
+  'removeFromCart': (id, quantity) => {},
+  'holeContents': null
 }
 
 describe('suppressed log tests', () => {
@@ -82,5 +86,7 @@ describe('suppressed log tests', () => {
 })
 
 afterAll(() => {
+  console.log()
   probe.get()(donut)
+  console.log()
 })
