@@ -159,6 +159,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v2.0.3 [2018-01-26]: Fix example image url.
 - v2.0.2 [2018-01-26]: Added support for arrays and values. Fixed sort.
 - v2.0.1 [2018-01-25]: Added repository url to package.json.
 - v2.0.0 [2018-01-24]: Changed API. Improved type support.
@@ -185,4 +186,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [nodei-npm-url]: https://nodei.co/npm/console-probe/
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
-[example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/42294bfa/example.png
+[example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png
