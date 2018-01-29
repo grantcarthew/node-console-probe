@@ -67,21 +67,11 @@ function genHeader (obj) {
   const constName = obj.constructor.name ? obj.constructor.name : ''
   const objName = obj.name ? obj.name : ''
   const objSignature = genSignature(obj.toString())
-  let header = '['
-  if (constName.length > 0) {
-    header += `${capitalize(constName)}]`
-  } else {
-    header += `${capitalize(typeof obj)}]`
-  }
+  let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`
   header = chalk.red(header)
   if (objName.length > 0) header += ` ${objName}`
   if (objSignature.length > 0) header += ` ${objSignature}`
   return header
-}
-
-function capitalize (value) {
-  value = value.toLowerCase()
-  return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
 function genType (obj) {

@@ -159,6 +159,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v2.0.4 [2018-01-29]: Changed node label format.
 - v2.0.3 [2018-01-26]: Fix example image url.
 - v2.0.2 [2018-01-26]: Added support for arrays and values. Fixed sort.
 - v2.0.1 [2018-01-25]: Added repository url to package.json.
