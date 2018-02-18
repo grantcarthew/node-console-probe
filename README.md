@@ -237,6 +237,13 @@ cp.apply(foo)
 // foo now has a probe and json function.
 ```
 
+Another approach to simply augment the console:
+
+```js
+require('console-probe').apply()
+// both console.probe and console.json are now ready for use.
+```
+
 ## About the Owner
 
 I, Grant Carthew, am a technologist, trainer, and Dad from Queensland, Australia. I work on code in a number of personal projects and when the need arises I build my own packages.
