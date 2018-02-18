@@ -88,12 +88,71 @@ The `probe` function output:
 
 _Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
 
-![Example][example-probe]
+![Example][example-probe-image]
 
 The `json` function output:
 
-![Example][example-json]
-
+```js
+{
+  "id": "0001",
+  "type": "donut",
+  "name": "Cake",
+  "description": "A small fried cake of sweetened dough, typically in the shape of a ball or ring.",
+  "ppu": 0.55,
+  "common": true,
+  "batters": {
+    "batter": [
+      {
+        "id": "1001",
+        "type": "Regular"
+      },
+      {
+        "id": "1002",
+        "type": "Chocolate"
+      },
+      {
+        "id": "1003",
+        "type": "Blueberry"
+      },
+      {
+        "id": "1004",
+        "type": "Devil's Food"
+      }
+    ]
+  },
+  "topping": [
+    {
+      "id": "5001",
+      "type": "None"
+    },
+    {
+      "id": "5002",
+      "type": "Glazed"
+    },
+    {
+      "id": "5005",
+      "type": "Sugar"
+    },
+    {
+      "id": "5007",
+      "type": "Powdered Sugar"
+    },
+    {
+      "id": "5006",
+      "type": "Chocolate with Sprinkles"
+    },
+    {
+      "id": "5003",
+      "type": "Chocolate"
+    },
+    {
+      "id": "5004",
+      "type": "Maple"
+    }
+  ],
+  "holeContents": null
+}
+```
 
 ## Rational
 
@@ -230,4 +289,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
 [fss-url]: https://www.npmjs.com/package/fast-safe-stringify
-[example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png
+[example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png
