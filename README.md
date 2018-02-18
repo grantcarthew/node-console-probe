@@ -156,7 +156,7 @@ The `json` function output:
 
 ## Rational
 
-There are many amazing packages on `npm`. Many of those packages are not well documented. Rather than go straight to reading source code I wrote `console-probe` to inspect objects and discover methods and properties. Using Node.js with inspect is often a better approach however I don't always have it running. This is when `console-probe` comes in handy.
+There are many amazing packages on `npm`. Many of those packages are not well documented. Rather than go straight to reading source code I wrote `console-probe` to inspect objects and discover methods and properties. Using Node.js with inspect is often a better approach however I don't always have it running; this is when `console-probe` comes in handy.
 
 ## Function
 
