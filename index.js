@@ -45,7 +45,7 @@ function probe(obj) {
         focusObj = obj[node.nodes[i]];
       } catch (err) {}
       var type = genType(focusObj);
-      var prefix = genPrefix(type);
+      var prefix = applyChalk(type, `[${type}]`);
       var postfix = genPostfix(type, focusObj);
       node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`;
     }
@@ -87,34 +87,6 @@ function genType(obj) {
     type = type.slice(0, 3).toLowerCase();
   } catch (err) {}
   return type;
-}
-
-function genPrefix(type) {
-  var result = void 0;
-  switch (type) {
-    case types.arr:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    case types.boo:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    case types.fun:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    case types.num:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    case types.obj:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    case types.str:
-      result = applyChalk(type, `[${type}]`);
-      break;
-    default:
-      result = `[${type}]`;
-      break;
-  }
-  return result;
 }
 
 function genPostfix(type, obj) {
