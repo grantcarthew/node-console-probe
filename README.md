@@ -11,7 +11,7 @@ Inspect JavaScript object methods and properties in the console.
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-Provides a `probe()` function to inspect JavaScript objects. Outputs a tree including the parent object properties and methods down through the prototype hierarchy.
+Provides a couple of functions to inspect JavaScript objects. The `probe()` function outputs a prototype hierarchy tree to the console. The `json()` function safely writes a stringified object output to the console.
 
 ## Installing
 
@@ -26,9 +26,10 @@ npm install --save-dev console-probe
 
 __Not recommended for production environments__
 
+
 ```js
 
-const probe = require('./console-probe')
+const consoleProbe = require('./console-probe')
 
 const donut = {
   'id': '0001',
@@ -62,77 +63,117 @@ const donut = {
   'holeContents': null
 }
 
+// Calling console-probe functions
+consoleProbe.probe(donut) // Writes prototype tree to the console
+consoleProbe.json(donut) // Writes stringified object to the console
+
+// Adding console-probe functions to the console
 console.probe(donut) // Throws exception 'console.probe is not a function'
-probe.apply()
-console.probe(donut) // Writes to the console
+console.json(donut) // Throws exception 'console.json is not a function'
+consoleProbe.apply()
+console.probe(donut) // Writes prototype tree to the console
+console.json(donut) // Writes stringified object to the console
 
+// Adding console-probe functions to an object
 const foo = {}
-probe.apply(foo)
-foo.probe(donut) // Writes to the console
-
-const probeFunc = probe.get()
-probeFunc(donut) // Writes to the console
+consoleProbe.apply(foo)
+foo.probe(donut) // Writes prototype tree to the console
+foo.json(donut) // Writes stringified object to the console
 
 ```
 
-The above code will produce the following result when it writes to the console:
+The above code will produce the following results when it writes to the console.
 
-![Example][example-image]
+The `probe` function output:
 
 _Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
 
+![Example][example-probe]
+
+The `json` function output:
+
+![Example][example-json]
+
+
 ## Rational
 
-Sometimes I am not using Node.js with inspect and just want to console out the methods and properties of an object. I wrote this for those odd times.
+There are many amazing packages on `npm`. Many of those packages are not well documented. Rather than go straight to reading source code I wrote `console-probe` to inspect objects and discover methods and properties. Using Node.js with inspect is often a better approach however I don't always have it running. This is when `console-probe` comes in handy.
 
 ## Function
 
-Depending on how you initialize `console-probe` it will either monkey patch the console, monkey patch an object, or provide a function. This function uses `Object.getOwnPropertyNames()` to enumerate the members of an object. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
+The `console-probe` package provides two functions that will write to the console:
+
+* `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` to enumerate the members of an object through its prototype hierarchy. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
+* `json(obj, replacer, spacer)`: Uses [fast-safe-stringify][fss-url] to safely write the stringified object out to the console.
 
 ## API
 
+### `probe` Function
 
-#### Apply
+__Method Signature:__ `probe(object)`
 
-Using the `apply` function will either add a `probe` function to the console or a custom object:
+__Parameter:__ `object` can be any JavaScript type.
+
+__Details:__
+
+* Passing `null` and `undefined` do not produce any output.
+* String values with newline characters are stripped from string stubs.
+
+__Example:__
 
 ```js
+const cp = require('console-probe')
+cp.probe({ key: 'value' })
+```
 
-const probe = require('console-probe')
+### `json` Function
+
+__Method Signature:__ `json(object, replacer, spacer)`
+
+__Parameter:__
+
+* `object` can be any object you wish to stringify.
+* `replacer` alters the behavior of the stringification process.
+* `spacer` inserts white space into the output JSON string for readability purposes.
+
+__Details:__
+
+* The `json` function defaults to `replacer = null` and `spacer = 2`.
+* See both [fast-safe-strinify][fss-url] and [MDN JSON.stringify][json-stringify-url] for more details.
+
+__Example:__
+
+```js
+const cp = require('console-probe')
+cp.json({ key: 'value' })
+// Outputs the following to the console
+{
+  "key": "value"
+}
+```
+
+### `apply` Function
+
+__Signature:__ `apply(object)`
+
+__Parameter:__ `object` can be any object you would like to add `console-probe` functions to.
+
+__Details:__
+
+* The `apply` function is a convenience method to add the `console-probe` functions to an object.
+* If no `object` is passed to the `apply` function then the `console-probe` functions will be added to the `console` object.
+* Passing an object, such as a logger, will add the `console-probe` functions to the object.
+
+__Example:__
+
+```js
+const cp = require('console-probe')
+cp.apply()
+// console now has a probe and json function.
+
 const foo = {}
-const bar = {}
-
-// Adds a new function to the global console object.
-probe.apply()
-console.probe(bar)
-
-// Adds a new function to the passed object.
-probe.apply(foo)
-foo.probe(bar)
-
-```
-
-Another approach:
-
-```js
-
-require('console-probe').apply()
-
-```
-
-#### Get
-
-Calling the `get` function simply returns the `probe` function for you to use how you see fit:
-
-```js
-
-const probe = require('console-probe')
-const bar = {}
-
-// Returns the probe function.
-const probeFunc = probe.get()
-probeFunc(bar)
-
+cp.apply(foo)
+// foo now has a probe and json function.
 ```
 
 ## About the Owner
@@ -159,6 +200,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v3.0.0 [2018-02-18]: Added json function. Improved API. Removed newline chrs.
 - v2.0.4 [2018-01-29]: Changed node label format.
 - v2.0.3 [2018-01-26]: Fix example image url.
 - v2.0.2 [2018-01-26]: Added support for arrays and values. Fixed sort.
@@ -187,4 +229,5 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [nodei-npm-url]: https://nodei.co/npm/console-probe/
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
+[fss-url]: https://www.npmjs.com/package/fast-safe-stringify
 [example-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png

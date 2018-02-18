@@ -1,3 +1,4 @@
+const stringify = require('fast-safe-stringify')
 const archy = require('archy')
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
@@ -12,17 +13,20 @@ const types = Object.freeze({
 })
 
 module.exports = Object.freeze({
-  apply (obj) {
-    if (obj == null) {
-      global.console.probe = probe
-    } else {
-      obj.probe = probe
-    }
-  },
-  get () {
-    return probe
-  }
+  apply,
+  probe,
+  json
 })
+
+function apply (obj) {
+  if (obj == null) {
+    global.console.probe = probe
+    global.console.json = json
+  } else {
+    obj.probe = probe
+    obj.json = json
+  }
+}
 
 function probe (obj) {
   if (obj == null) {
@@ -54,6 +58,10 @@ function probe (obj) {
     currentNode = node
   }
   console.log(archy(tree))
+}
+
+function json (obj, replacer = null, spacer = 2) {
+  console.log(stringify(obj, replacer, spacer))
 }
 
 function newNode (label) {
@@ -105,7 +113,8 @@ function genPostfix (type, obj) {
       postfix = applyChalk(type, `[keys: ${Object.getOwnPropertyNames(obj).length}]`)
       break
     case types.str:
-      const str = obj.length > 10 ? obj.substring(0, 10) + '...' : obj
+      let str = obj.replace(/(?:\r\n|\r|\n)/g, '')
+      str = str.length > 10 ? str.substring(0, 10) + '...' : str
       postfix = applyChalk(type, `[${str}]`)
       break
     default:
