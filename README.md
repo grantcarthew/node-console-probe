@@ -292,3 +292,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [chalk-url]: https://www.npmjs.com/package/chalk
 [fss-url]: https://www.npmjs.com/package/fast-safe-stringify
 [example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png
+[json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
