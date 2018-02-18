@@ -200,7 +200,7 @@ __Parameter:__
 __Details:__
 
 * The `json` function defaults to `replacer = null` and `spacer = 2`.
-* See both [fast-safe-strinify][fss-url] and [MDN JSON.stringify][json-stringify-url] for more details.
+* See both [fast-safe-stringify][fss-url] and [MDN JSON.stringify][json-stringify-url] for more details.
 
 __Example:__
 
