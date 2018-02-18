@@ -40,7 +40,7 @@ describe('suppressed log tests', () => {
     console.log = spyLog
   })
 
-  test('console-probe called by console.probe', () => {
+  test('console-probe functions called by console object', () => {
     expect(() => console.probe()).toThrow()
     expect(() => console.json()).toThrow()
     consoleProbe.apply()
@@ -50,7 +50,7 @@ describe('suppressed log tests', () => {
     expect(spyLog).toHaveBeenCalledTimes(2)
   })
 
-  test('console-probe appended to another object', () => {
+  test('console-probe functions appended to another object', () => {
     const thing = {}
     expect(() => thing.probe()).toThrow()
     expect(() => thing.json()).toThrow()
