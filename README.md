@@ -208,9 +208,9 @@ __Example:__
 const cp = require('console-probe')
 cp.json({ key: 'value' })
 // Outputs the following to the console
-{
-  "key": "value"
-}
+//{
+//  "key": "value"
+//}
 ```
 
 ### `apply` Function
