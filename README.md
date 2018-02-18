@@ -175,7 +175,7 @@ __Parameter:__ `object` can be any JavaScript type.
 
 __Details:__
 
-* Passing `null` and `undefined` do not produce any output.
+* Passing either `null` or `undefined` will write null or undefined to the console.
 * String values with newline characters are stripped from string stubs.
 
 __Example:__
