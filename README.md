@@ -183,6 +183,8 @@ __Example:__
 ```js
 const cp = require('console-probe')
 cp.probe({ key: 'value' })
+// Writes the object prototype hierarchy to the console
+// See above for an example of the output
 ```
 
 ### `json` Function
