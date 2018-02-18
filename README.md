@@ -207,7 +207,7 @@ __Example:__
 ```js
 const cp = require('console-probe')
 cp.json({ key: 'value' })
-// Outputs the following to the console
+// Outputs the following to the console:
 //{
 //  "key": "value"
 //}
