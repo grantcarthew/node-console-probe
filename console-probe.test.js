@@ -63,10 +63,13 @@ describe('suppressed log tests', () => {
     expect(jsonSpy).toHaveBeenCalledTimes(1)
   })
 
-  test('console-probe stand-alone function', () => {
+  test('console-probe stand-alone functions', () => {
     expect(typeof consoleProbe.probe).toBe('function')
     expect(consoleProbe.probe).toBe(console.probe)
     expect(consoleProbe.probe.toString()).toBe(console.probe.toString())
+    expect(typeof consoleProbe.json).toBe('function')
+    expect(consoleProbe.json).toBe(console.json)
+    expect(consoleProbe.json.toString()).toBe(console.json.toString())
   })
 
   test('console-probe type support', () => {
@@ -83,6 +86,7 @@ describe('suppressed log tests', () => {
     expect(() => { consoleProbe.probe([]) }).not.toThrow()
     expect(() => { consoleProbe.probe({}) }).not.toThrow()
     expect(() => { consoleProbe.probe(true) }).not.toThrow()
+    expect(spyLog).toHaveBeenCalledTimes(17)
   })
 
   afterAll(() => {
