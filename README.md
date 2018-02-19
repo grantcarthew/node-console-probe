@@ -168,6 +168,21 @@ cp.json({ key: 'value' })
 //}
 ```
 
+### `yaml` Function
+
+__Signature:__ `yaml(object, options, indentation)`
+
+__Parameter:__
+
+* `object` can be any object you wish to display in [YAML][yaml-url] format.
+* `options` should hold options for the [prettyjson][prettyjson-url] render function.
+* `indentation` controls the indentation for the YAML output.
+
+__Details:__
+
+* The `yaml` function is simply a wrapper around the [prettyjson][prettyjson-url] package.
+* See the [prettyjson][prettyjson-url] documentation and code for the options and indentation.
+
 ### `apply` Function
 
 __Signature:__ `apply(object)`
@@ -260,3 +275,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [prettyjson-url]: https://www.npmjs.com/package/prettyjson
 [json-colorizer-url]: https://www.npmjs.com/package/json-colorizer
+[yaml-url]: http://yaml.org/
