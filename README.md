@@ -226,7 +226,7 @@ Another approach to simply augment the console:
 
 ```js
 require('console-probe').apply()
-// both console.probe and console.json are now ready for use.
+// console.probe, console.json, and console.yaml are now ready for use.
 ```
 
 ## About the Owner
