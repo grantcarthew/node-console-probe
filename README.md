@@ -115,7 +115,7 @@ There are many amazing packages on `npm`. Many of those packages are not well do
 The `console-probe` package provides three functions that will write to the console:
 
 * `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` to enumerate the members of an object through its prototype hierarchy. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
-* `json(obj, replacer, spacer, color)`: Uses [fast-safe-stringify][fss-url] and [json-colorize][json-colorize-url] to safely write the stringified object out to the console.
+* `json(obj, replacer, spacer, color)`: Uses [fast-safe-stringify][fss-url] and [json-colorizer][json-colorizer-url] to safely write the stringified object out to the console.
 * `yaml(obj, options, indentation)`: A simple wrapper around the [prettyjson][prettyjson-url] package render function.
 
 ## API
