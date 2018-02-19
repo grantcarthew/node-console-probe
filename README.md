@@ -92,17 +92,17 @@ foo.yaml(donut) // Writes a YAML formatted object to the console
 
 The above code will produce the following results when it writes to the console.
 
-The `probe` function output:
+### The `probe` function output:
 
 _Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
 
 ![Example Probe Output][example-probe-image]
 
-The `json` function output:
+### The `json` function output:
 
 ![Example Json Output][example-json-image]
 
-The `yaml` function output to the console:
+### The `yaml` function output:
 
 ![Example Yaml Output][example-yaml-image]
 
