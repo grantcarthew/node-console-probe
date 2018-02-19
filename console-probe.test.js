@@ -43,17 +43,21 @@ describe('suppressed log tests', () => {
   test('console-probe functions called by console object', () => {
     expect(() => console.probe()).toThrow()
     expect(() => console.json()).toThrow()
+    expect(() => console.yaml()).toThrow()
     consoleProbe.apply()
     console.probe(donut)
     expect(spyLog).toHaveBeenCalledTimes(1)
     console.json(donut)
     expect(spyLog).toHaveBeenCalledTimes(2)
+    console.yaml(donut)
+    expect(spyLog).toHaveBeenCalledTimes(3)
   })
 
   test('console-probe functions appended to another object', () => {
     const thing = {}
     expect(() => thing.probe()).toThrow()
     expect(() => thing.json()).toThrow()
+    expect(() => thing.yaml()).toThrow()
     consoleProbe.apply(thing)
     const probeSpy = jest.spyOn(thing, 'probe')
     thing.probe(donut)
@@ -61,6 +65,9 @@ describe('suppressed log tests', () => {
     const jsonSpy = jest.spyOn(thing, 'json')
     thing.json(donut)
     expect(jsonSpy).toHaveBeenCalledTimes(1)
+    const yamlSpy = jest.spyOn(thing, 'yaml')
+    thing.yaml(donut)
+    expect(yamlSpy).toHaveBeenCalledTimes(1)
   })
 
   test('console-probe stand-alone functions', () => {
@@ -70,6 +77,9 @@ describe('suppressed log tests', () => {
     expect(typeof consoleProbe.json).toBe('function')
     expect(consoleProbe.json).toBe(console.json)
     expect(consoleProbe.json.toString()).toBe(console.json.toString())
+    expect(typeof consoleProbe.yaml).toBe('function')
+    expect(consoleProbe.yaml).toBe(console.yaml)
+    expect(consoleProbe.yaml.toString()).toBe(console.yaml.toString())
   })
 
   test('console-probe type support', () => {
@@ -86,7 +96,7 @@ describe('suppressed log tests', () => {
     expect(() => { consoleProbe.probe([]) }).not.toThrow()
     expect(() => { consoleProbe.probe({}) }).not.toThrow()
     expect(() => { consoleProbe.probe(true) }).not.toThrow()
-    expect(spyLog).toHaveBeenCalledTimes(17)
+    expect(spyLog).toHaveBeenCalledTimes(19)
   })
 
   afterAll(() => {
@@ -96,7 +106,8 @@ describe('suppressed log tests', () => {
 
 afterAll(() => {
   console.log()
-  consoleProbe(donut)
+  consoleProbe.yaml(donut)
   consoleProbe.json(donut)
+  consoleProbe.probe(donut)
   console.log()
 })

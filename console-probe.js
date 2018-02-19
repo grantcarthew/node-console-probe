@@ -1,4 +1,6 @@
-const stringify = require('fast-safe-stringify')
+const prettyJson = require('prettyjson')
+const fastSafeStringify = require('fast-safe-stringify')
+const jsonColorizer = require('json-colorizer')
 const archy = require('archy')
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
@@ -15,17 +17,29 @@ const types = Object.freeze({
 module.exports = Object.freeze({
   apply,
   probe,
-  json
+  json,
+  yaml
 })
 
 function apply (obj) {
   if (obj == null) {
-    global.console.probe = probe
     global.console.json = json
+    global.console.yaml = yaml
+    global.console.probe = probe
   } else {
-    obj.probe = probe
     obj.json = json
+    obj.yaml = yaml
+    obj.probe = probe
   }
+}
+
+function json (obj, replacer = null, spacer = 2, color = {}) {
+  const asString = fastSafeStringify(obj, replacer, spacer)
+  console.log(jsonColorizer(asString, color))
+}
+
+function yaml (obj, options, indentation) {
+  console.log(prettyJson.render(obj, options, indentation))
 }
 
 function probe (obj) {
@@ -58,10 +72,6 @@ function probe (obj) {
     currentNode = node
   }
   console.log(archy(tree))
-}
-
-function json (obj, replacer = null, spacer = 2) {
-  console.log(stringify(obj, replacer, spacer))
 }
 
 function newNode (label) {

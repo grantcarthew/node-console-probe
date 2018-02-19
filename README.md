@@ -11,7 +11,11 @@ Inspect JavaScript object methods and properties in the console.
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-Provides a couple of functions to inspect JavaScript objects. The `probe()` function outputs a prototype hierarchy tree to the console. The `json()` function safely writes a stringified object output to the console.
+Provides colourful functions to inspect JavaScript objects.
+
+* The `probe()` function outputs a prototype hierarchy tree to the console.
+* The `json()` function safely writes a stringified object output to the console.
+* The `yaml()` function converts objects into yaml format and outputs to the console.
 
 ## Installing
 
@@ -29,7 +33,7 @@ __Not recommended for production environments__
 
 ```js
 
-const consoleProbe = require('./console-probe')
+const cp = require('./console-probe')
 
 const donut = {
   'id': '0001',
@@ -63,22 +67,26 @@ const donut = {
   'holeContents': null
 }
 
-// Calling console-probe functions
-consoleProbe.probe(donut) // Writes prototype tree to the console
-consoleProbe.json(donut) // Writes stringified object to the console
+// Calling console-probe functions.
+cp.probe(donut) // Writes prototype tree to the console
+cp.json(donut) // Writes a JSON formatted object to the console
+cp.yaml(donut) // Writes YAML formatted object to the console
 
-// Adding console-probe functions to the console
+// Adding console-probe functions to the console.
 console.probe(donut) // Throws exception 'console.probe is not a function'
 console.json(donut) // Throws exception 'console.json is not a function'
-consoleProbe.apply()
+console.yaml(donut) // Throws exception 'console.yaml is not a function'
+cp.apply()
 console.probe(donut) // Writes prototype tree to the console
-console.json(donut) // Writes stringified object to the console
+console.json(donut) // Writes a JSON formatted object to the console
+console.yaml(donut) // Writes a YAML formatted object to the console
 
-// Adding console-probe functions to an object
+// Adding console-probe functions to an object.
 const foo = {}
-consoleProbe.apply(foo)
+cp.apply(foo)
 foo.probe(donut) // Writes prototype tree to the console
-foo.json(donut) // Writes stringified object to the console
+foo.json(donut) // Writes a JSON formatted object to the console
+foo.yaml(donut) // Writes a YAML formatted object to the console
 
 ```
 
@@ -88,71 +96,15 @@ The `probe` function output:
 
 _Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
 
-![Example][example-probe-image]
+![Example Probe Output][example-probe-image]
 
 The `json` function output:
 
-```js
-{
-  "id": "0001",
-  "type": "donut",
-  "name": "Cake",
-  "description": "A small fried cake of sweetened dough, typically in the shape of a ball or ring.",
-  "ppu": 0.55,
-  "common": true,
-  "batters": {
-    "batter": [
-      {
-        "id": "1001",
-        "type": "Regular"
-      },
-      {
-        "id": "1002",
-        "type": "Chocolate"
-      },
-      {
-        "id": "1003",
-        "type": "Blueberry"
-      },
-      {
-        "id": "1004",
-        "type": "Devil's Food"
-      }
-    ]
-  },
-  "topping": [
-    {
-      "id": "5001",
-      "type": "None"
-    },
-    {
-      "id": "5002",
-      "type": "Glazed"
-    },
-    {
-      "id": "5005",
-      "type": "Sugar"
-    },
-    {
-      "id": "5007",
-      "type": "Powdered Sugar"
-    },
-    {
-      "id": "5006",
-      "type": "Chocolate with Sprinkles"
-    },
-    {
-      "id": "5003",
-      "type": "Chocolate"
-    },
-    {
-      "id": "5004",
-      "type": "Maple"
-    }
-  ],
-  "holeContents": null
-}
-```
+![Example Json Output][example-json-image]
+
+The `yaml` function output to the console:
+
+![Example Yaml Output][example-yaml-image]
 
 ## Rational
 
@@ -160,10 +112,11 @@ There are many amazing packages on `npm`. Many of those packages are not well do
 
 ## Function
 
-The `console-probe` package provides two functions that will write to the console:
+The `console-probe` package provides three functions that will write to the console:
 
 * `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` to enumerate the members of an object through its prototype hierarchy. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
-* `json(obj, replacer, spacer)`: Uses [fast-safe-stringify][fss-url] to safely write the stringified object out to the console.
+* `json(obj, replacer, spacer, color)`: Uses [fast-safe-stringify][fss-url] and [json-colorize][json-colorize-url] to safely write the stringified object out to the console.
+* `yaml(obj, options, indentation)`: A simple wrapper around the [prettyjson][prettyjson-url] package render function.
 
 ## API
 
@@ -189,18 +142,20 @@ cp.probe({ key: 'value' })
 
 ### `json` Function
 
-__Method Signature:__ `json(object, replacer, spacer)`
+__Method Signature:__ `json(object, replacer, spacer, color)`
 
 __Parameter:__
 
 * `object` can be any object you wish to stringify.
 * `replacer` alters the behavior of the stringification process.
 * `spacer` inserts white space into the output JSON string for readability purposes.
+* `color` enables customization of the colour displayed.
 
 __Details:__
 
 * The `json` function defaults to `replacer = null` and `spacer = 2`.
-* See both [fast-safe-stringify][fss-url] and [MDN JSON.stringify][json-stringify-url] for more details.
+* See both [fast-safe-stringify][fss-url] and [JSON.stringify][json-stringify-url] for more details.
+* Change the color displayed using a color object from the [json-colorizer][json-colorizer-url] options.
 
 __Example:__
 
@@ -230,11 +185,11 @@ __Example:__
 ```js
 const cp = require('console-probe')
 cp.apply()
-// console now has a probe and json function.
+// console now has a probe, json, and yaml function.
 
 const foo = {}
 cp.apply(foo)
-// foo now has a probe and json function.
+// foo now has a probe, json, and yaml function.
 ```
 
 Another approach to simply augment the console:
@@ -268,6 +223,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.
 - v3.0.0 [2018-02-18]: Added json function. Improved API. Removed newline chrs.
 - v2.0.4 [2018-01-29]: Changed node label format.
 - v2.0.3 [2018-01-26]: Fix example image url.
@@ -298,5 +254,9 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
 [fss-url]: https://www.npmjs.com/package/fast-safe-stringify
-[example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/bcf7b65e/example.png
+[example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-probe.png
+[example-json-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-json.png
+[example-yaml-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-yaml.png
 [json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+[prettyjson-url]: https://www.npmjs.com/package/prettyjson
+[json-colorizer-url]: https://www.npmjs.com/package/json-colorizer

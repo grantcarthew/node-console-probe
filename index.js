@@ -1,6 +1,8 @@
 'use strict';
 
-var stringify = require('fast-safe-stringify');
+var prettyJson = require('prettyjson');
+var fastSafeStringify = require('fast-safe-stringify');
+var jsonColorizer = require('json-colorizer');
 var archy = require('archy');
 var chalk = require('chalk');
 var stripAnsi = require('strip-ansi');
@@ -17,17 +19,33 @@ var types = Object.freeze({
 module.exports = Object.freeze({
   apply,
   probe,
-  json
+  json,
+  yaml
 });
 
 function apply(obj) {
   if (obj == null) {
-    global.console.probe = probe;
     global.console.json = json;
+    global.console.yaml = yaml;
+    global.console.probe = probe;
   } else {
-    obj.probe = probe;
     obj.json = json;
+    obj.yaml = yaml;
+    obj.probe = probe;
   }
+}
+
+function json(obj) {
+  var replacer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var spacer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+  var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
+  var asString = fastSafeStringify(obj, replacer, spacer);
+  console.log(jsonColorizer(asString, color));
+}
+
+function yaml(obj, options, indentation) {
+  console.log(prettyJson.render(obj, options, indentation));
 }
 
 function probe(obj) {
@@ -62,13 +80,6 @@ function probe(obj) {
     currentNode = node;
   }
   console.log(archy(tree));
-}
-
-function json(obj) {
-  var replacer = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-  var spacer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
-
-  console.log(stringify(obj, replacer, spacer));
 }
 
 function newNode(label) {

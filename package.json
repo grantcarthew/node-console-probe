@@ -1,6 +1,6 @@
 {
   "name": "console-probe",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Inspect JavaScript object methods and properties in the console.",
   "main": "console-probe.js",
   "repository": {
@@ -45,6 +45,8 @@
     "archy": "^1.0.0",
     "chalk": "^2.3.1",
     "fast-safe-stringify": "^2.0.3",
+    "json-colorizer": "^1.1.0",
+    "prettyjson": "^1.2.1",
     "strip-ansi": "^4.0.0"
   },
   "devDependencies": {
@@ -52,7 +54,7 @@
     "babel-preset-env": "^1.6.1",
     "del-cli": "^1.1.0",
     "jest": "^22.3.0",
-    "standard": "^10.0.3",
+    "standard": "^11.0.0",
     "npm-check-updates": "^2.14.0"
   }
 }
