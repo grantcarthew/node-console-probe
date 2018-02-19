@@ -122,6 +122,8 @@ The `console-probe` package provides three functions that will write to the cons
 
 ### `probe` Function
 
+__Description:__ Inspects the passed objects properties and methods, then the prototype of the passed object, and so on till the last prototype is analyzed. A tree of the properties and methods on each prototype is written to the console.
+
 __Method Signature:__ `probe(object)`
 
 __Parameter:__ `object` can be any JavaScript type.
@@ -141,6 +143,8 @@ cp.probe({ key: 'value' })
 ```
 
 ### `json` Function
+
+__Description:__ This function simply calls [fast-safe-stringify][fss-url] and then adds color via [json-colorizer][json-colorizer-url]. Once that is done it writes the result to the console.
 
 __Method Signature:__ `json(object, replacer, spacer, color)`
 
@@ -170,6 +174,8 @@ cp.json({ key: 'value' })
 
 ### `yaml` Function
 
+__Description:__ This function wraps the [prettyjson][prettyjson-url] render function and writes the result to the console. The result is a colorized formatted [YAML][yaml-url] representation of the object data.
+
 __Signature:__ `yaml(object, options, indentation)`
 
 __Parameter:__
@@ -182,6 +188,15 @@ __Details:__
 
 * The `yaml` function is simply a wrapper around the [prettyjson][prettyjson-url] package.
 * See the [prettyjson][prettyjson-url] documentation and code for the options and indentation.
+
+__Example:__
+
+```js
+const cp = require('console-probe')
+cp.yaml({ key: 'value' })
+// Outputs the following to the console:
+// key: value
+```
 
 ### `apply` Function
 
