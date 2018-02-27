@@ -1,4 +1,6 @@
-const consoleProbe = require('./index')
+const cp = require('./console-probe')
+const secretIngredient = Symbol('Secret Ingredient')
+const hiddenFeature = Symbol('Hidden Feature')
 
 const donut = {
   'id': '0001',
@@ -29,8 +31,12 @@ const donut = {
   ],
   'addToCart': function addToCart (id, quantity) {},
   'removeFromCart': (id, quantity) => {},
-  'holeContents': null
+  'holeContents': null,
+  'reaction': Symbol('Mmmmm...donuts')
 }
+
+donut[secretIngredient] = 'Unicorn Tears'
+donut[hiddenFeature] = 'Euphoria'
 
 describe('suppressed log tests', () => {
   const spyLog = jest.fn()
@@ -44,7 +50,7 @@ describe('suppressed log tests', () => {
     expect(() => console.probe()).toThrow()
     expect(() => console.json()).toThrow()
     expect(() => console.yaml()).toThrow()
-    consoleProbe.apply()
+    cp.apply()
     console.probe(donut)
     expect(spyLog).toHaveBeenCalledTimes(1)
     console.json(donut)
@@ -58,7 +64,7 @@ describe('suppressed log tests', () => {
     expect(() => thing.probe()).toThrow()
     expect(() => thing.json()).toThrow()
     expect(() => thing.yaml()).toThrow()
-    consoleProbe.apply(thing)
+    cp.apply(thing)
     const probeSpy = jest.spyOn(thing, 'probe')
     thing.probe(donut)
     expect(probeSpy).toHaveBeenCalledTimes(1)
@@ -71,31 +77,31 @@ describe('suppressed log tests', () => {
   })
 
   test('console-probe stand-alone functions', () => {
-    expect(typeof consoleProbe.probe).toBe('function')
-    expect(consoleProbe.probe).toBe(console.probe)
-    expect(consoleProbe.probe.toString()).toBe(console.probe.toString())
-    expect(typeof consoleProbe.json).toBe('function')
-    expect(consoleProbe.json).toBe(console.json)
-    expect(consoleProbe.json.toString()).toBe(console.json.toString())
-    expect(typeof consoleProbe.yaml).toBe('function')
-    expect(consoleProbe.yaml).toBe(console.yaml)
-    expect(consoleProbe.yaml.toString()).toBe(console.yaml.toString())
+    expect(typeof cp.probe).toBe('function')
+    expect(cp.probe).toBe(console.probe)
+    expect(cp.probe.toString()).toBe(console.probe.toString())
+    expect(typeof cp.json).toBe('function')
+    expect(cp.json).toBe(console.json)
+    expect(cp.json.toString()).toBe(console.json.toString())
+    expect(typeof cp.yaml).toBe('function')
+    expect(cp.yaml).toBe(console.yaml)
+    expect(cp.yaml.toString()).toBe(console.yaml.toString())
   })
 
   test('console-probe type support', () => {
-    expect(() => { consoleProbe.probe() }).not.toThrow()
-    expect(() => { consoleProbe.probe(null) }).not.toThrow()
-    expect(() => { consoleProbe.probe(undefined) }).not.toThrow()
-    expect(() => { consoleProbe.probe(function name () {}) }).not.toThrow()
-    expect(() => { consoleProbe.probe(() => {}) }).not.toThrow()
-    expect(() => { consoleProbe.probe(consoleProbe) }).not.toThrow()
-    expect(() => { consoleProbe.probe(1) }).not.toThrow()
-    expect(() => { consoleProbe.probe(-1) }).not.toThrow()
-    expect(() => { consoleProbe.probe(0) }).not.toThrow()
-    expect(() => { consoleProbe.probe('') }).not.toThrow()
-    expect(() => { consoleProbe.probe([]) }).not.toThrow()
-    expect(() => { consoleProbe.probe({}) }).not.toThrow()
-    expect(() => { consoleProbe.probe(true) }).not.toThrow()
+    expect(() => { cp.probe() }).not.toThrow()
+    expect(() => { cp.probe(null) }).not.toThrow()
+    expect(() => { cp.probe(undefined) }).not.toThrow()
+    expect(() => { cp.probe(function name () {}) }).not.toThrow()
+    expect(() => { cp.probe(() => {}) }).not.toThrow()
+    expect(() => { cp.probe(cp) }).not.toThrow()
+    expect(() => { cp.probe(1) }).not.toThrow()
+    expect(() => { cp.probe(-1) }).not.toThrow()
+    expect(() => { cp.probe(0) }).not.toThrow()
+    expect(() => { cp.probe('') }).not.toThrow()
+    expect(() => { cp.probe([]) }).not.toThrow()
+    expect(() => { cp.probe({}) }).not.toThrow()
+    expect(() => { cp.probe(true) }).not.toThrow()
     expect(spyLog).toHaveBeenCalledTimes(19)
   })
 
@@ -106,8 +112,8 @@ describe('suppressed log tests', () => {
 
 afterAll(() => {
   console.log()
-  consoleProbe.yaml(donut)
-  consoleProbe.json(donut)
-  consoleProbe.probe(donut)
+  cp.yaml(donut)
+  cp.json(donut)
+  cp.probe(donut)
   console.log()
 })

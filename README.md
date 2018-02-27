@@ -252,7 +252,9 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 5.  Submit a pull request :D
 
 ## Change Log
-
+- v4.0.0 [Not Yet Published]
+  - Added Symbol support.
+  - Now displays `[nul]` and `[und]` types.
 - v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.
 - v3.0.0 [2018-02-18]: Added json function. Improved API. Removed newline chrs.
 - v2.0.4 [2018-01-29]: Changed node label format.

@@ -11,7 +11,10 @@ const types = Object.freeze({
   num: 'num',
   obj: 'obj',
   str: 'str',
-  unk: '---'
+  sym: 'sym',
+  und: 'und',
+  nul: 'nul',
+  err: 'err'
 })
 
 module.exports = Object.freeze({
@@ -43,7 +46,7 @@ function yaml (obj, options, indentation) {
 }
 
 function probe (obj) {
-  if (obj == null) {
+  if (obj == null || genType(obj) === types.sym) {
     console.log(obj)
     return
   }
@@ -54,14 +57,31 @@ function probe (obj) {
   for (;obj != null; obj = Object.getPrototypeOf(obj)) {
     const node = newNode(genHeader(obj))
     node.nodes = Object.getOwnPropertyNames(obj)
+    node.nodes.push(...Object.getOwnPropertySymbols(obj))
 
     for (let i = 0; i < node.nodes.length; i++) {
       let focusObj = null
-      try { focusObj = obj[node.nodes[i]] } catch (err) {}
-      const type = genType(focusObj)
-      const prefix = applyChalk(type, `[${type}]`)
+      let type
+      let isSymbolKey = genType(node.nodes[i]) === types.sym
+      try {
+        focusObj = obj[node.nodes[i]]
+        type = genType(focusObj)
+      } catch (err) {
+        type = types.err
+      }
+      let prefix = applyChalk(type, `[${type}]`)
       const postfix = genPostfix(type, focusObj)
-      node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`
+      if (isSymbolKey) {
+        const symDesc = getSymbolDescription(node.nodes[i])
+        prefix = applyChalk(types.sym, `[${types.sym}]`) + prefix
+        if (symDesc.length > 0) {
+          node.nodes[i] = `${prefix} ${symDesc} ${postfix}`
+        } else {
+          node.nodes[i] = `${prefix} ${postfix}`
+        }
+      } else {
+        node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`
+      }
     }
 
     node.nodes.sort((a, b) => {
@@ -93,8 +113,9 @@ function genHeader (obj) {
 }
 
 function genType (obj) {
-  let type = types.unk
-  if (obj == null) return type
+  let type = types.err
+  if (obj === null) return types.nul
+  if (obj === undefined) return types.und
   if (Array.isArray(obj)) return types.arr
   try {
     type = typeof obj
@@ -106,6 +127,9 @@ function genType (obj) {
 function genPostfix (type, obj) {
   let postfix = ''
   switch (type) {
+    case types.und:
+    case types.nul:
+      break
     case types.arr:
       postfix = applyChalk(type, `[len: ${obj.length}]`)
       break
@@ -123,14 +147,28 @@ function genPostfix (type, obj) {
       postfix = applyChalk(type, `[keys: ${Object.getOwnPropertyNames(obj).length}]`)
       break
     case types.str:
-      let str = obj.replace(/(?:\r\n|\r|\n)/g, '')
-      str = str.length > 10 ? str.substring(0, 10) + '...' : str
-      postfix = applyChalk(type, `[${str}]`)
+      postfix = applyChalk(type, `[${cleanString(obj)}]`)
+      break
+    case types.sym:
+      const symDesc = getSymbolDescription(obj)
+      if (symDesc.length > 0) {
+        postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`)
+      }
       break
     default:
       break
   }
   return postfix
+}
+
+function cleanString (value) {
+  let str = value.replace(/(?:\r\n|\r|\n)/g, '')
+  const limit = 15
+  return str.length > limit ? str.substring(0, limit) + '...' : str
+}
+
+function getSymbolDescription (sym) {
+  return String(sym).slice(7, -1)
 }
 
 function applyChalk (type, str) {
@@ -153,6 +191,9 @@ function applyChalk (type, str) {
       break
     case types.str:
       result = chalk.magenta(str)
+      break
+    case types.sym:
+      result = chalk.yellow(str)
       break
     default:
       result = str

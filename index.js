@@ -1,5 +1,7 @@
 'use strict';
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var prettyJson = require('prettyjson');
 var fastSafeStringify = require('fast-safe-stringify');
 var jsonColorizer = require('json-colorizer');
@@ -13,7 +15,10 @@ var types = Object.freeze({
   num: 'num',
   obj: 'obj',
   str: 'str',
-  unk: '---'
+  sym: 'sym',
+  und: 'und',
+  nul: 'nul',
+  err: 'err'
 });
 
 module.exports = Object.freeze({
@@ -49,7 +54,7 @@ function yaml(obj, options, indentation) {
 }
 
 function probe(obj) {
-  if (obj == null) {
+  if (obj == null || genType(obj) === types.sym) {
     console.log(obj);
     return;
   }
@@ -58,18 +63,35 @@ function probe(obj) {
   var currentNode = newNode('root');
 
   for (; obj != null; obj = Object.getPrototypeOf(obj)) {
+    var _node$nodes;
+
     var node = newNode(genHeader(obj));
     node.nodes = Object.getOwnPropertyNames(obj);
+    (_node$nodes = node.nodes).push.apply(_node$nodes, _toConsumableArray(Object.getOwnPropertySymbols(obj)));
 
     for (var i = 0; i < node.nodes.length; i++) {
       var focusObj = null;
+      var type = void 0;
+      var isSymbolKey = genType(node.nodes[i]) === types.sym;
       try {
         focusObj = obj[node.nodes[i]];
-      } catch (err) {}
-      var type = genType(focusObj);
+        type = genType(focusObj);
+      } catch (err) {
+        type = types.err;
+      }
       var prefix = applyChalk(type, `[${type}]`);
       var postfix = genPostfix(type, focusObj);
-      node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`;
+      if (isSymbolKey) {
+        var symDesc = getSymbolDescription(node.nodes[i]);
+        prefix = applyChalk(types.sym, `[${types.sym}]`) + prefix;
+        if (symDesc.length > 0) {
+          node.nodes[i] = `${prefix} ${symDesc} ${postfix}`;
+        } else {
+          node.nodes[i] = `${prefix} ${postfix}`;
+        }
+      } else {
+        node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`;
+      }
     }
 
     node.nodes.sort(function (a, b) {
@@ -101,8 +123,9 @@ function genHeader(obj) {
 }
 
 function genType(obj) {
-  var type = types.unk;
-  if (obj == null) return type;
+  var type = types.err;
+  if (obj === null) return types.nul;
+  if (obj === undefined) return types.und;
   if (Array.isArray(obj)) return types.arr;
   try {
     type = typeof obj;
@@ -114,6 +137,9 @@ function genType(obj) {
 function genPostfix(type, obj) {
   var postfix = '';
   switch (type) {
+    case types.und:
+    case types.nul:
+      break;
     case types.arr:
       postfix = applyChalk(type, `[len: ${obj.length}]`);
       break;
@@ -131,14 +157,28 @@ function genPostfix(type, obj) {
       postfix = applyChalk(type, `[keys: ${Object.getOwnPropertyNames(obj).length}]`);
       break;
     case types.str:
-      var str = obj.replace(/(?:\r\n|\r|\n)/g, '');
-      str = str.length > 10 ? str.substring(0, 10) + '...' : str;
-      postfix = applyChalk(type, `[${str}]`);
+      postfix = applyChalk(type, `[${cleanString(obj)}]`);
+      break;
+    case types.sym:
+      var symDesc = getSymbolDescription(obj);
+      if (symDesc.length > 0) {
+        postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`);
+      }
       break;
     default:
       break;
   }
   return postfix;
+}
+
+function cleanString(value) {
+  var str = value.replace(/(?:\r\n|\r|\n)/g, '');
+  var limit = 15;
+  return str.length > limit ? str.substring(0, limit) + '...' : str;
+}
+
+function getSymbolDescription(sym) {
+  return String(sym).slice(7, -1);
 }
 
 function applyChalk(type, str) {
@@ -161,6 +201,9 @@ function applyChalk(type, str) {
       break;
     case types.str:
       result = chalk.magenta(str);
+      break;
+    case types.sym:
+      result = chalk.yellow(str);
       break;
     default:
       result = str;
