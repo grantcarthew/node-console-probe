@@ -1,52 +1,22 @@
-const prettyJson = require('prettyjson')
-const fastSafeStringify = require('fast-safe-stringify')
-const jsonColorizer = require('json-colorizer')
+const types = require('./types')
 const archy = require('archy')
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
-const types = Object.freeze({
-  arr: 'arr',
-  boo: 'boo',
-  fun: 'fun',
-  num: 'num',
-  obj: 'obj',
-  str: 'str',
-  sym: 'sym',
-  und: 'und',
-  nul: 'nul',
-  err: 'err'
-})
 
-module.exports = Object.freeze({
-  apply,
-  probe,
-  json,
-  yaml
-})
-
-function apply (obj) {
-  if (obj == null) {
-    global.console.json = json
-    global.console.yaml = yaml
-    global.console.probe = probe
-  } else {
-    obj.json = json
-    obj.yaml = yaml
-    obj.probe = probe
-  }
+String.prototype.center = function (width, padding) {
+  padding = padding || ' ';
+  padding = padding.substr(0, 1)
+	if (this.length < width) {
+    var len		= width - this.length
+		var remain	= (len % 2 == 0) ? '' : padding
+		var pads	= padding.repeat(parseInt(len / 2))
+		return pads + this + pads + remain
+	} else
+    {return this;}
 }
 
-function json (obj, replacer = null, spacer = 2, color = {}) {
-  const asString = fastSafeStringify(obj, replacer, spacer)
-  console.log(jsonColorizer(asString, color))
-}
-
-function yaml (obj, options, indentation) {
-  console.log(prettyJson.render(obj, options, indentation))
-}
-
-function probe (obj) {
-  if (obj == null || genType(obj) === types.sym) {
+module.exports = function probe (obj) {
+  if (obj == null || getTypeString(obj) === types.Symbol) {
     console.log(obj)
     return
   }
@@ -62,18 +32,18 @@ function probe (obj) {
     for (let i = 0; i < node.nodes.length; i++) {
       let focusObj = null
       let type
-      let isSymbolKey = genType(node.nodes[i]) === types.sym
+      let isSymbolKey = getTypeString(node.nodes[i]) === types.Symbol
       try {
         focusObj = obj[node.nodes[i]]
-        type = genType(focusObj)
+        type = getTypeString(focusObj)
       } catch (err) {
-        type = types.err
+        type = types.Error
       }
       let prefix = applyChalk(type, `[${type}]`)
       const postfix = genPostfix(type, focusObj)
       if (isSymbolKey) {
         const symDesc = getSymbolDescription(node.nodes[i])
-        prefix = applyChalk(types.sym, `[${types.sym}]`) + prefix
+        prefix = applyChalk(types.Symbol, `[${types.Symbol}]`) + prefix
         if (symDesc.length > 0) {
           node.nodes[i] = `${prefix} ${symDesc} ${postfix}`
         } else {
@@ -112,48 +82,45 @@ function genHeader (obj) {
   return header
 }
 
-function genType (obj) {
-  let type = types.err
-  if (obj === null) return types.nul
-  if (obj === undefined) return types.und
-  if (Array.isArray(obj)) return types.arr
-  try {
-    type = typeof obj
-    type = type.slice(0, 3).toLowerCase()
-  } catch (err) { }
-  return type
+function getTypeString (obj) {
+  return Object.prototype.toString.call(obj).slice(8, -1)
 }
 
 function genPostfix (type, obj) {
   let postfix = ''
   switch (type) {
-    case types.und:
-    case types.nul:
+    case types.Undefined:
+    case types.Null:
+    case types.NaN:
       break
-    case types.arr:
+    case types.Array:
       postfix = applyChalk(type, `[len: ${obj.length}]`)
       break
-    case types.boo:
+    case types.Boolean:
       postfix = applyChalk(type, `[${obj.toString()}]`)
       break
-    case types.fun:
+    case types.Function:
       const signature = genSignature(obj.toString())
       postfix = applyChalk(type, signature)
       break
-    case types.num:
+    case types.Number:
       postfix = applyChalk(type, `[${obj.toString()}]`)
       break
-    case types.obj:
+    case types.Object:
       postfix = applyChalk(type, `[keys: ${Object.getOwnPropertyNames(obj).length}]`)
       break
-    case types.str:
+    case types.String:
       postfix = applyChalk(type, `[${cleanString(obj)}]`)
       break
-    case types.sym:
+    case types.Symbol:
       const symDesc = getSymbolDescription(obj)
       if (symDesc.length > 0) {
         postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`)
       }
+      break
+    case types.Map:
+    case types.Set:
+      postfix = applyChalk(type, `[size: ${obj.size}]`)
       break
     default:
       break
@@ -174,25 +141,25 @@ function getSymbolDescription (sym) {
 function applyChalk (type, str) {
   let result
   switch (type) {
-    case types.arr:
+    case types.Array:
       result = chalk.yellow(str)
       break
-    case types.boo:
+    case types.Boolean:
       result = chalk.cyan(str)
       break
-    case types.fun:
+    case types.Function:
       result = chalk.green(str)
       break
-    case types.num:
+    case types.Number:
       result = chalk.blue(str)
       break
-    case types.obj:
-      result = chalk.yellow(str)
-      break
-    case types.str:
+    case types.String:
       result = chalk.magenta(str)
       break
-    case types.sym:
+    case types.Object:
+    case types.Symbol:
+    case types.Map:
+    case types.Set:
       result = chalk.yellow(str)
       break
     default:

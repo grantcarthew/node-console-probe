@@ -1,4 +1,4 @@
-const cp = require('./console-probe')
+const cp = require('./index')
 const secretIngredient = Symbol('Secret Ingredient')
 const hiddenFeature = Symbol('Hidden Feature')
 
@@ -19,8 +19,8 @@ const donut = {
       { 'id': '1004', 'type': "Devil's Food" }
     ]
   },
-  'topping':
-  [
+  'filling': ['None', 'Raspberry Jam', 'Custard'],
+  'topping': new Set([
     { 'id': '5001', 'type': 'None' },
     { 'id': '5002', 'type': 'Glazed' },
     { 'id': '5005', 'type': 'Sugar' },
@@ -28,16 +28,19 @@ const donut = {
     { 'id': '5006', 'type': 'Chocolate with Sprinkles' },
     { 'id': '5003', 'type': 'Chocolate' },
     { 'id': '5004', 'type': 'Maple' }
-  ],
+  ]),
+  'sprinkles': new WeakMap([[{'Colour': true}, 'Popular'], [{'Chocolate': true}, 'OK']]),
   'addToCart': function addToCart (id, quantity) {},
   'removeFromCart': (id, quantity) => {},
   'holeContents': null,
+  'tricks': new Map([['juggle', true]]),
   'reaction': Symbol('Mmmmm...donuts')
 }
 
 donut[secretIngredient] = 'Unicorn Tears'
 donut[hiddenFeature] = 'Euphoria'
-
+cp.probe(donut)
+return
 describe('suppressed log tests', () => {
   const spyLog = jest.fn()
   const consoleLog = console.log
