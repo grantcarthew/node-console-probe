@@ -36,38 +36,48 @@ __Not recommended for production environments__
 ```js
 
 const cp = require('./console-probe')
+const arrLen = 2
 
-const donut = {
-  'id': '0001',
-  'type': 'donut',
-  'name': 'Cake',
-  'description': 'A small fried cake of sweetened dough, typically in the shape of a ball or ring.',
-  'ppu': 0.55,
-  'common': true,
-  'batters':
-  {
-    'batter':
-    [
-      { 'id': '1001', 'type': 'Regular' },
-      { 'id': '1002', 'type': 'Chocolate' },
-      { 'id': '1003', 'type': 'Blueberry' },
-      { 'id': '1004', 'type': "Devil's Food" }
-    ]
-  },
-  'topping':
-  [
-    { 'id': '5001', 'type': 'None' },
-    { 'id': '5002', 'type': 'Glazed' },
-    { 'id': '5005', 'type': 'Sugar' },
-    { 'id': '5007', 'type': 'Powdered Sugar' },
-    { 'id': '5006', 'type': 'Chocolate with Sprinkles' },
-    { 'id': '5003', 'type': 'Chocolate' },
-    { 'id': '5004', 'type': 'Maple' }
-  ],
-  'addToCart': function addToCart (id, quantity) {},
-  'removeFromCart': (id, quantity) => {},
-  'holeContents': null
+const aussieSlang = {
+  'name': 'Aussie Slang Words',
+  'gday': Infinity,
+  'maccas': Number.NaN,
+  'arvo': undefined,
+  'straya': null,
+  'footy': {specky: true},
+  'biccy': (size, toppings) => {},
+  'servo': true,
+  'choccy': Symbol('Mmmmm...'),
+  'bottle-o': Error('Cheers mate! My shout next'),
+  'tinny': 42,
+  'coppa': new Date(),
+  'tradie': 'She\'ll be right mate?',
+  'postie': /a.long.regexp.that.keeps.giving/,
+  'garbo': [1, 2, 3],
+  'muso': new Int8Array(arrLen),
+  'cabbie': new Uint8Array(arrLen),
+  'ambo': new Uint8ClampedArray(arrLen),
+  'prezzie': new Int16Array(arrLen),
+  'chrissie': new Uint16Array(arrLen),
+  'cuppa': new Int32Array(arrLen),
+  'mate': new Uint32Array(arrLen),
+  'snag': new Float32Array(arrLen),
+  'drongo': new Float64Array(arrLen),
+  'fairDinkum': new Map([['foo', 'bar']]),
+  'bonza': new Set([['foo', 'bar']]),
+  'tooRight': new WeakMap(),
+  'dunny': new WeakSet(),
+  'cobber': new ArrayBuffer(arrLen),
+  'barbie': new SharedArrayBuffer(arrLen),
+  'stickybeak': Atomics,
+  'stoked': new DataView(new ArrayBuffer(arrLen)),
+  'ripper': Promise.resolve(),
+  'mongrel': (function * () {})(),
+  'holyDooley': function * (foo, bar) {},
+  'roo': async function (foo, bar) {}
 }
+const secret = Symbol('Hidden Property')
+aussieSlang[secret] = 'Bogan'
 
 // Calling console-probe functions.
 cp.probe(donut) // Writes prototype tree to the console
@@ -254,9 +264,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 5.  Submit a pull request :D
 
 ## Change Log
-- v4.0.0 [Not Yet Published]
-  - Added multiple type support.
-  - Strings extended from 10 to 15 characters.
+
+- v3.2.0 [2018-03-02]: Multiple type support. Probe format updated.
 - v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.
 - v3.0.0 [2018-02-18]: Added json function. Improved API. Removed newline chrs.
 - v2.0.4 [2018-01-29]: Changed node label format.
