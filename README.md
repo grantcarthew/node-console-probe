@@ -106,7 +106,7 @@ The above code will produce the following results when it writes to the console.
 
 ### The `probe` function output:
 
-_Note: Types of `null`, `undefined`, or type conversion errors will display as `[---]`._
+_Note: Type detection errors will display as `[Unknown]`_
 
 ![Example Probe Output][example-probe-image]
 
