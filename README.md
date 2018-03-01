@@ -21,7 +21,7 @@ Provides colourful functions to inspect JavaScript objects.
 
 ## Installing
 
-* Node: v4.7.0 or later.
+* Node: v6.0.0 or later.
 * Browser: Not tested
 
 ```sh
