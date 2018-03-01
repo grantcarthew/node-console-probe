@@ -1,4 +1,4 @@
-const cp = require('./index')
+const cp = require('../index')
 const arrLen = 2
 
 const aussieSlang = {
@@ -15,8 +15,8 @@ const aussieSlang = {
   'tinny': 42,
   'coppa': new Date(),
   'tradie': 'She\'ll be right mate?',
-  'postie': /a\long\regexp\that\keeps\giving/,
-  'garbo': [1,2,3],
+  'postie': /a.long.regexp.that.keeps.giving/,
+  'garbo': [1, 2, 3],
   'muso': new Int8Array(arrLen),
   'cabbie': new Uint8Array(arrLen),
   'ambo': new Uint8ClampedArray(arrLen),
@@ -127,7 +127,7 @@ describe('suppressed log tests', () => {
     expect(() => { cp.probe(new ArrayBuffer()) }).not.toThrow()
     expect(() => { cp.probe(new SharedArrayBuffer()) }).not.toThrow()
     expect(() => { cp.probe(Atomics) }).not.toThrow()
-    expect(() => { cp.probe(new DataView(new ArrayBuffer)) }).not.toThrow()
+    expect(() => { cp.probe(new DataView(new ArrayBuffer())) }).not.toThrow()
     expect(() => { cp.probe(Promise.resolve()) }).not.toThrow()
     expect(() => { cp.probe((function * () {})()) }).not.toThrow()
     expect(() => { cp.probe(function * () {}) }).not.toThrow()

@@ -8,11 +8,11 @@
     "url": "git+https://github.com/grantcarthew/node-console-probe.git"
   },
   "scripts": {
-    "clean": "del index.js",
+    "clean": "del dist",
     "test": "jest",
     "watch": "jest --watch",
     "lint": "standard",
-    "build": "npm run clean && standard && babel console-probe.js --out-file index.js && npm test",
+    "build": "npm run clean && standard && babel src -d dist && npm test",
     "upgrade": "npm run upgrade:rm && npm run upgrade:ncu && npm run upgrade:npm-install",
     "upgrade:rm": "rm node_modules -Rf",
     "upgrade:ncu": "npm-check-updates --upgradeAll",
@@ -35,10 +35,12 @@
       "jest",
       "beforeAll",
       "afterAll",
-      "describe"
+      "describe",
+      "SharedArrayBuffer",
+      "Atomics"
     ],
     "ignore": [
-      "index.js"
+      "dist"
     ]
   },
   "dependencies": {
@@ -55,7 +57,7 @@
     "del-cli": "^1.1.0",
     "jest": "^22.4.2",
     "nodemon": "^1.17.1",
-    "npm-check-updates": "^2.14.0",
+    "npm-check-updates": "^2.14.1",
     "standard": "^11.0.0"
   }
 }
