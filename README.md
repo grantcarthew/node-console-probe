@@ -106,7 +106,7 @@ The above code will produce the following results when it writes to the console.
 
 ### The `probe` function output:
 
-_Note: Type detection errors will display as `[Unknown]`_
+_Note: Type detection errors will display as `[Unknown]`._
 
 ![Example Probe Output][example-probe-image]
 
@@ -126,7 +126,7 @@ There are many amazing packages on `npm`. Many of those packages are not well do
 
 The `console-probe` package provides three functions that will write to the console:
 
-* `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` to enumerate the members of an object through its prototype hierarchy. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
+* `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` and `Object.getOwnPropertySymbols()` to enumerate the members of an object through its prototype hierarchy. Using the type list from [MDN][jstypes-url] the types are detected. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
 * `json(obj, replacer, spacer, color)`: Uses [fast-safe-stringify][fss-url] and [json-colorizer][json-colorizer-url] to safely write the stringified object out to the console.
 * `yaml(obj, options, indentation)`: A simple wrapper around the [prettyjson][prettyjson-url] package render function.
 
@@ -305,3 +305,4 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [prettyjson-url]: https://www.npmjs.com/package/prettyjson
 [json-colorizer-url]: https://www.npmjs.com/package/json-colorizer
 [yaml-url]: http://yaml.org/
+[jstypes-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
