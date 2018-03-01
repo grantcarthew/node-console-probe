@@ -54,7 +54,8 @@
     "babel-preset-env": "^1.6.1",
     "del-cli": "^1.1.0",
     "jest": "^22.4.2",
-    "standard": "^11.0.0",
-    "npm-check-updates": "^2.14.0"
+    "nodemon": "^1.17.1",
+    "npm-check-updates": "^2.14.0",
+    "standard": "^11.0.0"
   }
 }

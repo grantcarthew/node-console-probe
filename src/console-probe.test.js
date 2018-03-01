@@ -1,46 +1,47 @@
 const cp = require('./index')
-const secretIngredient = Symbol('Secret Ingredient')
-const hiddenFeature = Symbol('Hidden Feature')
+const arrLen = 2
 
-const donut = {
-  'id': '0001',
-  'type': 'donut',
-  'name': 'Cake',
-  'description': 'A small \nfried cake of sweetened dough, typically in the shape of a ball or ring.',
-  'ppu': 0.55,
-  'common': true,
-  'batters':
-  {
-    'batter':
-    [
-      { 'id': '1001', 'type': 'Regular' },
-      { 'id': '1002', 'type': 'Chocolate' },
-      { 'id': '1003', 'type': 'Blueberry' },
-      { 'id': '1004', 'type': "Devil's Food" }
-    ]
-  },
-  'filling': ['None', 'Raspberry Jam', 'Custard'],
-  'topping': new Set([
-    { 'id': '5001', 'type': 'None' },
-    { 'id': '5002', 'type': 'Glazed' },
-    { 'id': '5005', 'type': 'Sugar' },
-    { 'id': '5007', 'type': 'Powdered Sugar' },
-    { 'id': '5006', 'type': 'Chocolate with Sprinkles' },
-    { 'id': '5003', 'type': 'Chocolate' },
-    { 'id': '5004', 'type': 'Maple' }
-  ]),
-  'sprinkles': new WeakMap([[{'Colour': true}, 'Popular'], [{'Chocolate': true}, 'OK']]),
-  'addToCart': function addToCart (id, quantity) {},
-  'removeFromCart': (id, quantity) => {},
-  'holeContents': null,
-  'tricks': new Map([['juggle', true]]),
-  'reaction': Symbol('Mmmmm...donuts')
+const aussieSlang = {
+  'name': 'Aussie Slang Words',
+  'gday': Infinity,
+  'maccas': Number.NaN,
+  'arvo': undefined,
+  'straya': null,
+  'footy': {specky: true},
+  'biccy': (size, toppings) => {},
+  'servo': true,
+  'choccy': Symbol('Mmmmm...'),
+  'bottle-o': Error('Cheers mate! My shout next'),
+  'tinny': 42,
+  'coppa': new Date(),
+  'tradie': 'She\'ll be right mate?',
+  'postie': /a\long\regexp\that\keeps\giving/,
+  'garbo': [1,2,3],
+  'muso': new Int8Array(arrLen),
+  'cabbie': new Uint8Array(arrLen),
+  'ambo': new Uint8ClampedArray(arrLen),
+  'prezzie': new Int16Array(arrLen),
+  'chrissie': new Uint16Array(arrLen),
+  'cuppa': new Int32Array(arrLen),
+  'mate': new Uint32Array(arrLen),
+  'snag': new Float32Array(arrLen),
+  'drongo': new Float64Array(arrLen),
+  'fairDinkum': new Map([['foo', 'bar']]),
+  'bonza': new Set([['foo', 'bar']]),
+  'tooRight': new WeakMap(),
+  'dunny': new WeakSet(),
+  'cobber': new ArrayBuffer(arrLen),
+  'barbie': new SharedArrayBuffer(arrLen),
+  'stickybeak': Atomics,
+  'stoked': new DataView(new ArrayBuffer(arrLen)),
+  'ripper': Promise.resolve(),
+  'mongrel': (function * () {})(),
+  'holyDooley': function * (foo, bar) {},
+  'roo': async function (foo, bar) {}
 }
+const secret = Symbol('Hidden Property')
+aussieSlang[secret] = 'Bogan'
 
-donut[secretIngredient] = 'Unicorn Tears'
-donut[hiddenFeature] = 'Euphoria'
-cp.probe(donut)
-return
 describe('suppressed log tests', () => {
   const spyLog = jest.fn()
   const consoleLog = console.log
@@ -54,11 +55,11 @@ describe('suppressed log tests', () => {
     expect(() => console.json()).toThrow()
     expect(() => console.yaml()).toThrow()
     cp.apply()
-    console.probe(donut)
+    console.probe(aussieSlang)
     expect(spyLog).toHaveBeenCalledTimes(1)
-    console.json(donut)
+    console.json(aussieSlang)
     expect(spyLog).toHaveBeenCalledTimes(2)
-    console.yaml(donut)
+    console.yaml(aussieSlang)
     expect(spyLog).toHaveBeenCalledTimes(3)
   })
 
@@ -69,13 +70,13 @@ describe('suppressed log tests', () => {
     expect(() => thing.yaml()).toThrow()
     cp.apply(thing)
     const probeSpy = jest.spyOn(thing, 'probe')
-    thing.probe(donut)
+    thing.probe(aussieSlang)
     expect(probeSpy).toHaveBeenCalledTimes(1)
     const jsonSpy = jest.spyOn(thing, 'json')
-    thing.json(donut)
+    thing.json(aussieSlang)
     expect(jsonSpy).toHaveBeenCalledTimes(1)
     const yamlSpy = jest.spyOn(thing, 'yaml')
-    thing.yaml(donut)
+    thing.yaml(aussieSlang)
     expect(yamlSpy).toHaveBeenCalledTimes(1)
   })
 
@@ -93,19 +94,46 @@ describe('suppressed log tests', () => {
 
   test('console-probe type support', () => {
     expect(() => { cp.probe() }).not.toThrow()
-    expect(() => { cp.probe(null) }).not.toThrow()
+    expect(() => { cp.probe(Infinity) }).not.toThrow()
+    expect(() => { cp.probe(Number.NaN) }).not.toThrow()
     expect(() => { cp.probe(undefined) }).not.toThrow()
+    expect(() => { cp.probe(null) }).not.toThrow()
+    expect(() => { cp.probe({}) }).not.toThrow()
     expect(() => { cp.probe(function name () {}) }).not.toThrow()
     expect(() => { cp.probe(() => {}) }).not.toThrow()
-    expect(() => { cp.probe(cp) }).not.toThrow()
+    expect(() => { cp.probe(true) }).not.toThrow()
+    expect(() => { cp.probe(Symbol('test')) }).not.toThrow()
+    expect(() => { cp.probe(new Error('test')) }).not.toThrow()
     expect(() => { cp.probe(1) }).not.toThrow()
     expect(() => { cp.probe(-1) }).not.toThrow()
     expect(() => { cp.probe(0) }).not.toThrow()
+    expect(() => { cp.probe(new Date()) }).not.toThrow()
     expect(() => { cp.probe('') }).not.toThrow()
+    expect(() => { cp.probe(/a/) }).not.toThrow()
     expect(() => { cp.probe([]) }).not.toThrow()
-    expect(() => { cp.probe({}) }).not.toThrow()
-    expect(() => { cp.probe(true) }).not.toThrow()
-    expect(spyLog).toHaveBeenCalledTimes(19)
+    expect(() => { cp.probe(new Int8Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Uint8Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Uint8ClampedArray()) }).not.toThrow()
+    expect(() => { cp.probe(new Int16Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Uint16Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Int32Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Uint32Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Float32Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Float64Array()) }).not.toThrow()
+    expect(() => { cp.probe(new Map()) }).not.toThrow()
+    expect(() => { cp.probe(new Set()) }).not.toThrow()
+    expect(() => { cp.probe(new WeakMap()) }).not.toThrow()
+    expect(() => { cp.probe(new WeakSet()) }).not.toThrow()
+    expect(() => { cp.probe(new ArrayBuffer()) }).not.toThrow()
+    expect(() => { cp.probe(new SharedArrayBuffer()) }).not.toThrow()
+    expect(() => { cp.probe(Atomics) }).not.toThrow()
+    expect(() => { cp.probe(new DataView(new ArrayBuffer)) }).not.toThrow()
+    expect(() => { cp.probe(Promise.resolve()) }).not.toThrow()
+    expect(() => { cp.probe((function * () {})()) }).not.toThrow()
+    expect(() => { cp.probe(function * () {}) }).not.toThrow()
+    expect(() => { cp.probe(async function () {}) }).not.toThrow()
+    expect(() => { cp.probe(cp) }).not.toThrow()
+    expect(spyLog).toHaveBeenCalledTimes(46)
   })
 
   afterAll(() => {
@@ -115,8 +143,8 @@ describe('suppressed log tests', () => {
 
 afterAll(() => {
   console.log()
-  cp.yaml(donut)
-  cp.json(donut)
-  cp.probe(donut)
+  cp.yaml(aussieSlang)
+  cp.json(aussieSlang)
+  cp.probe(aussieSlang)
   console.log()
 })

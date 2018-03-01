@@ -1,8 +1,11 @@
 module.exports = Object.freeze({
+  // Type Errors
+  Unknown: 'Unknown',
+
   // Value Properties
   Infinity: 'Infinity',
   NaN: 'NaN',
-  undefined: 'Undefined',
+  Undefined: 'Undefined',
   Null: 'Null',
 
   // Fundamental Objects

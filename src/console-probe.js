@@ -3,21 +3,10 @@ const archy = require('archy')
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
 
-String.prototype.center = function (width, padding) {
-  padding = padding || ' ';
-  padding = padding.substr(0, 1)
-	if (this.length < width) {
-    var len		= width - this.length
-		var remain	= (len % 2 == 0) ? '' : padding
-		var pads	= padding.repeat(parseInt(len / 2))
-		return pads + this + pads + remain
-	} else
-    {return this;}
-}
-
 module.exports = function probe (obj) {
-  if (obj == null || getTypeString(obj) === types.Symbol) {
-    console.log(obj)
+  if (obj == null) {
+    const message = chalk.red('[console-probe] Invalid Type: ')
+    console.log(message + obj)
     return
   }
 
@@ -37,7 +26,8 @@ module.exports = function probe (obj) {
         focusObj = obj[node.nodes[i]]
         type = getTypeString(focusObj)
       } catch (err) {
-        type = types.Error
+        type = types.Unknown
+        focusObj = err
       }
       let prefix = applyChalk(type, `[${type}]`)
       const postfix = genPostfix(type, focusObj)
@@ -74,7 +64,13 @@ function newNode (label) {
 function genHeader (obj) {
   const constName = obj.constructor.name ? obj.constructor.name : ''
   const objName = obj.name ? obj.name : ''
-  const objSignature = genSignature(obj.toString())
+  const type = getTypeString(obj)
+  let objSignature = ''
+  if (type === types.Function ||
+      type === types.GeneratorFunction ||
+      type === types.AsyncFunction) {
+    objSignature = genSignature(obj.toString())
+  }
   let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`
   header = chalk.red(header)
   if (objName.length > 0) header += ` ${objName}`
@@ -83,34 +79,29 @@ function genHeader (obj) {
 }
 
 function getTypeString (obj) {
+  if (Number.isNaN(obj)) return types.NaN
   return Object.prototype.toString.call(obj).slice(8, -1)
 }
 
 function genPostfix (type, obj) {
   let postfix = ''
   switch (type) {
+    case types.Infinity:
+    case types.NaN:
     case types.Undefined:
     case types.Null:
-    case types.NaN:
-      break
-    case types.Array:
-      postfix = applyChalk(type, `[len: ${obj.length}]`)
-      break
-    case types.Boolean:
-      postfix = applyChalk(type, `[${obj.toString()}]`)
-      break
-    case types.Function:
-      const signature = genSignature(obj.toString())
-      postfix = applyChalk(type, signature)
-      break
-    case types.Number:
-      postfix = applyChalk(type, `[${obj.toString()}]`)
       break
     case types.Object:
       postfix = applyChalk(type, `[keys: ${Object.getOwnPropertyNames(obj).length}]`)
       break
-    case types.String:
-      postfix = applyChalk(type, `[${cleanString(obj)}]`)
+    case types.Function:
+    case types.GeneratorFunction:
+    case types.AsyncFunction:
+      const signature = genSignature(obj.toString())
+      postfix = applyChalk(type, signature)
+      break
+    case types.Boolean:
+      postfix = applyChalk(type, `[${obj.toString()}]`)
       break
     case types.Symbol:
       const symDesc = getSymbolDescription(obj)
@@ -118,9 +109,41 @@ function genPostfix (type, obj) {
         postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`)
       }
       break
+    case types.Error:
+      postfix = obj.message && applyChalk(type, `[${cleanString(obj.message)}]`)
+      break
+    case types.Number:
+      postfix = applyChalk(type, `[${obj.toString()}]`)
+      break
+    case types.Date:
+      postfix = applyChalk(type, `[${obj.toString()}]`)
+      break
+    case types.String:
+      postfix = applyChalk(type, `[${cleanString(obj)}]`)
+      break
+    case types.RegExp:
+      postfix = applyChalk(type, `[${limitString(obj.toString())}]`)
+      break
+    case types.Array:
+    case types.Int8Array:
+    case types.Uint8Array:
+    case types.Uint8ClampedArray:
+    case types.Int16Array:
+    case types.Uint16Array:
+    case types.Int32Array:
+    case types.Uint32Array:
+    case types.Float32Array:
+    case types.Float64Array:
+      postfix = applyChalk(type, `[len: ${obj.length}]`)
+      break
     case types.Map:
     case types.Set:
       postfix = applyChalk(type, `[size: ${obj.size}]`)
+      break
+    case types.ArrayBuffer:
+    case types.SharedArrayBuffer:
+    case types.DataView:
+      postfix = applyChalk(type, `[len: ${obj.byteLength}]`)
       break
     default:
       break
@@ -130,8 +153,12 @@ function genPostfix (type, obj) {
 
 function cleanString (value) {
   let str = value.replace(/(?:\r\n|\r|\n)/g, '')
+  return limitString(str)
+}
+
+function limitString (value) {
   const limit = 15
-  return str.length > limit ? str.substring(0, limit) + '...' : str
+  return value.length > limit ? value.substring(0, limit) + '...' : value
 }
 
 function getSymbolDescription (sym) {
@@ -141,26 +168,64 @@ function getSymbolDescription (sym) {
 function applyChalk (type, str) {
   let result
   switch (type) {
-    case types.Array:
+    // Null Types
+    case types.Infinity:
+    case types.NaN:
+    case types.Undefined:
+    case types.Null:
+      result = str // No colour
+      break
+    // Objects and Properties
+    case types.Object:
+    case types.Symbol:
+    case types.Date:
       result = chalk.yellow(str)
       break
+    // Collections and Arrays
+    case types.Array:
+    case types.Int8Array:
+    case types.Uint8Array:
+    case types.Uint8ClampedArray:
+    case types.Int16Array:
+    case types.Uint16Array:
+    case types.Int32Array:
+    case types.Uint32Array:
+    case types.Float32Array:
+    case types.Float64Array:
+    case types.Map:
+    case types.Set:
+    case types.WeakMap:
+    case types.WeakSet:
+      result = chalk.blue(str)
+      break
+    // Structured Data and Boolean
     case types.Boolean:
+    case types.ArrayBuffer:
+    case types.SharedArrayBuffer:
+    case types.Atomics:
+    case types.DataView:
       result = chalk.cyan(str)
       break
+    // Functions and Control Objects
     case types.Function:
+    case types.Promise:
+    case types.Generator:
+    case types.GeneratorFunction:
+    case types.AsyncFunction:
       result = chalk.green(str)
       break
+    // Number Types
     case types.Number:
       result = chalk.blue(str)
       break
+    // Strings
     case types.String:
+    case types.RegExp:
       result = chalk.magenta(str)
       break
-    case types.Object:
-    case types.Symbol:
-    case types.Map:
-    case types.Set:
-      result = chalk.yellow(str)
+    // Errors
+    case types.Error:
+      result = chalk.red(str)
       break
     default:
       result = str
