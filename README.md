@@ -9,6 +9,8 @@ Inspect JavaScript object methods and properties in the console.
 [![NSP Status][nsp-image]][nsp-url]
 [![Patreon Donation][patreon-image]][patreon-url]
 
+![Event Emitter Example][example-eventemitter-image]
+
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
 Provides colourful functions to inspect JavaScript objects.
@@ -286,9 +288,10 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [archy-url]: https://www.npmjs.com/package/archy
 [chalk-url]: https://www.npmjs.com/package/chalk
 [fss-url]: https://www.npmjs.com/package/fast-safe-stringify
-[example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-probe.png
-[example-json-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-json.png
-[example-yaml-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/77a6726d/example-yaml.png
+[example-eventemitter-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/eventemitter.png
+[example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-probe.png
+[example-json-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-json.png
+[example-yaml-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-yaml.png
 [json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [prettyjson-url]: https://www.npmjs.com/package/prettyjson
 [json-colorizer-url]: https://www.npmjs.com/package/json-colorizer
