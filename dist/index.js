@@ -1,8 +1,8 @@
 'use strict';
 
-var probe = require('./console-probe');
-var json = require('./console-json');
-var yaml = require('./console-yaml');
+const probe = require('./console-probe');
+const json = require('./console-json');
+const yaml = require('./console-yaml');
 
 module.exports = Object.freeze({
   apply,

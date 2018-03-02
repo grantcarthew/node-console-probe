@@ -69,7 +69,7 @@ function genHeader (obj) {
   if (type === types.Function ||
       type === types.GeneratorFunction ||
       type === types.AsyncFunction) {
-    objSignature = genSignature(obj.toString())
+    objSignature = genSignature(obj)
   }
   let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`
   header = chalk.red(header)
@@ -97,7 +97,7 @@ function genPostfix (type, obj) {
     case types.Function:
     case types.GeneratorFunction:
     case types.AsyncFunction:
-      const signature = genSignature(obj.toString())
+      const signature = genSignature(obj)
       postfix = applyChalk(type, signature)
       break
     case types.Boolean:
@@ -234,6 +234,11 @@ function applyChalk (type, str) {
   return result
 }
 
-function genSignature (funString) {
+function genSignature (obj) {
+  let funString = ''
+  try {
+    funString = Function.prototype.toString.call(obj)
+    funString = funString.slice(funString.indexOf('('), funString.indexOf(')') + 1)
+  } catch (err) { }
   return funString.slice(funString.indexOf('('), funString.indexOf(')') + 1)
 }

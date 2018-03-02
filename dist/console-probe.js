@@ -1,33 +1,29 @@
 'use strict';
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-var types = require('./types');
-var archy = require('archy');
-var chalk = require('chalk');
-var stripAnsi = require('strip-ansi');
+const types = require('./types');
+const archy = require('archy');
+const chalk = require('chalk');
+const stripAnsi = require('strip-ansi');
 
 module.exports = function probe(obj) {
   if (obj == null) {
-    var message = chalk.red('[console-probe] Invalid Type: ');
+    const message = chalk.red('[console-probe] Invalid Type: ');
     console.log(message + obj);
     return;
   }
 
-  var tree = null;
-  var currentNode = newNode('root');
+  let tree = null;
+  let currentNode = newNode('root');
 
   for (; obj != null; obj = Object.getPrototypeOf(obj)) {
-    var _node$nodes;
-
-    var node = newNode(genHeader(obj));
+    const node = newNode(genHeader(obj));
     node.nodes = Object.getOwnPropertyNames(obj);
-    (_node$nodes = node.nodes).push.apply(_node$nodes, _toConsumableArray(Object.getOwnPropertySymbols(obj)));
+    node.nodes.push(...Object.getOwnPropertySymbols(obj));
 
-    for (var i = 0; i < node.nodes.length; i++) {
-      var focusObj = null;
-      var type = void 0;
-      var isSymbolKey = getTypeString(node.nodes[i]) === types.Symbol;
+    for (let i = 0; i < node.nodes.length; i++) {
+      let focusObj = null;
+      let type;
+      let isSymbolKey = getTypeString(node.nodes[i]) === types.Symbol;
       try {
         focusObj = obj[node.nodes[i]];
         type = getTypeString(focusObj);
@@ -35,10 +31,10 @@ module.exports = function probe(obj) {
         type = types.Unknown;
         focusObj = err;
       }
-      var prefix = applyChalk(type, `[${type}]`);
-      var postfix = genPostfix(type, focusObj);
+      let prefix = applyChalk(type, `[${type}]`);
+      const postfix = genPostfix(type, focusObj);
       if (isSymbolKey) {
-        var symDesc = getSymbolDescription(node.nodes[i]);
+        const symDesc = getSymbolDescription(node.nodes[i]);
         prefix = applyChalk(types.Symbol, `[${types.Symbol}]`) + prefix;
         if (symDesc.length > 0) {
           node.nodes[i] = `${prefix} ${symDesc} ${postfix}`;
@@ -50,7 +46,7 @@ module.exports = function probe(obj) {
       }
     }
 
-    node.nodes.sort(function (a, b) {
+    node.nodes.sort((a, b) => {
       return stripAnsi(a).localeCompare(stripAnsi(b));
     });
     tree = tree || node;
@@ -68,14 +64,14 @@ function newNode(label) {
 }
 
 function genHeader(obj) {
-  var constName = obj.constructor.name ? obj.constructor.name : '';
-  var objName = obj.name ? obj.name : '';
-  var type = getTypeString(obj);
-  var objSignature = '';
+  const constName = obj.constructor.name ? obj.constructor.name : '';
+  const objName = obj.name ? obj.name : '';
+  const type = getTypeString(obj);
+  let objSignature = '';
   if (type === types.Function || type === types.GeneratorFunction || type === types.AsyncFunction) {
-    objSignature = genSignature(obj.toString());
+    objSignature = genSignature(obj);
   }
-  var header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`;
+  let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`;
   header = chalk.red(header);
   if (objName.length > 0) header += ` ${objName}`;
   if (objSignature.length > 0) header += ` ${objSignature}`;
@@ -88,7 +84,7 @@ function getTypeString(obj) {
 }
 
 function genPostfix(type, obj) {
-  var postfix = '';
+  let postfix = '';
   switch (type) {
     case types.Infinity:
     case types.NaN:
@@ -101,14 +97,14 @@ function genPostfix(type, obj) {
     case types.Function:
     case types.GeneratorFunction:
     case types.AsyncFunction:
-      var signature = genSignature(obj.toString());
+      const signature = genSignature(obj);
       postfix = applyChalk(type, signature);
       break;
     case types.Boolean:
       postfix = applyChalk(type, `[${obj.toString()}]`);
       break;
     case types.Symbol:
-      var symDesc = getSymbolDescription(obj);
+      const symDesc = getSymbolDescription(obj);
       if (symDesc.length > 0) {
         postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`);
       }
@@ -156,12 +152,12 @@ function genPostfix(type, obj) {
 }
 
 function cleanString(value) {
-  var str = value.replace(/(?:\r\n|\r|\n)/g, '');
+  let str = value.replace(/(?:\r\n|\r|\n)/g, '');
   return limitString(str);
 }
 
 function limitString(value) {
-  var limit = 15;
+  const limit = 15;
   return value.length > limit ? value.substring(0, limit) + '...' : value;
 }
 
@@ -170,7 +166,7 @@ function getSymbolDescription(sym) {
 }
 
 function applyChalk(type, str) {
-  var result = void 0;
+  let result;
   switch (type) {
     // Null Types
     case types.Infinity:
@@ -238,6 +234,11 @@ function applyChalk(type, str) {
   return result;
 }
 
-function genSignature(funString) {
+function genSignature(obj) {
+  let funString = '';
+  try {
+    funString = Function.prototype.toString.call(obj);
+    funString = funString.slice(funString.indexOf('('), funString.indexOf(')') + 1);
+  } catch (err) {}
   return funString.slice(funString.indexOf('('), funString.indexOf(')') + 1);
 }
