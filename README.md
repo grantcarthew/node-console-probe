@@ -142,7 +142,7 @@ __Parameter:__ `object` can be any JavaScript type.
 
 __Details:__
 
-* Passing either `null` or `undefined` will write null or undefined to the console.
+* Passing either `null` or `undefined` will write `[console-probe] Invalid Type:` to the console.
 * String values with newline characters are stripped from string stubs.
 
 __Example:__
@@ -179,9 +179,9 @@ __Example:__
 const cp = require('console-probe')
 cp.json({ key: 'value' })
 // Outputs the following to the console:
-//{
-//  "key": "value"
-//}
+// {
+//   "key": "value"
+// }
 ```
 
 ### `yaml` Function
