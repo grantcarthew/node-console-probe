@@ -12,6 +12,7 @@
     "test": "jest",
     "watch": "jest --watch",
     "lint": "standard",
+    "prepublish": "npm run build",
     "build": "npm run clean && standard && babel src -d dist && npm test",
     "upgrade": "npm run upgrade:rm && npm run upgrade:ncu && npm run upgrade:npm-install",
     "upgrade:rm": "rm node_modules -Rf",
