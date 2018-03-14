@@ -80,25 +80,25 @@ const secret = Symbol('Hidden Property')
 aussieSlang[secret] = 'Bogan'
 
 // Calling console-probe functions.
-cp.probe(donut) // Writes prototype tree to the console
-cp.json(donut) // Writes a JSON formatted object to the console
-cp.yaml(donut) // Writes YAML formatted object to the console
+cp.probe(aussieSlang) // Writes prototype tree to the console
+cp.json(aussieSlang) // Writes a JSON formatted object to the console
+cp.yaml(aussieSlang) // Writes YAML formatted object to the console
 
 // Adding console-probe functions to the console.
-console.probe(donut) // Throws exception 'console.probe is not a function'
-console.json(donut) // Throws exception 'console.json is not a function'
-console.yaml(donut) // Throws exception 'console.yaml is not a function'
+console.probe(aussieSlang) // Throws exception 'console.probe is not a function'
+console.json(aussieSlang) // Throws exception 'console.json is not a function'
+console.yaml(aussieSlang) // Throws exception 'console.yaml is not a function'
 cp.apply()
-console.probe(donut) // Writes prototype tree to the console
-console.json(donut) // Writes a JSON formatted object to the console
-console.yaml(donut) // Writes a YAML formatted object to the console
+console.probe(aussieSlang) // Writes prototype tree to the console
+console.json(aussieSlang) // Writes a JSON formatted object to the console
+console.yaml(aussieSlang) // Writes a YAML formatted object to the console
 
 // Adding console-probe functions to an object.
 const foo = {}
 cp.apply(foo)
-foo.probe(donut) // Writes prototype tree to the console
-foo.json(donut) // Writes a JSON formatted object to the console
-foo.yaml(donut) // Writes a YAML formatted object to the console
+foo.probe(aussieSlang) // Writes prototype tree to the console
+foo.json(aussieSlang) // Writes a JSON formatted object to the console
+foo.yaml(aussieSlang) // Writes a YAML formatted object to the console
 
 ```
 
