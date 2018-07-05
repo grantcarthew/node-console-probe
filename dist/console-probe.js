@@ -66,13 +66,8 @@ function newNode(label) {
 function genHeader(obj) {
   const constName = obj.constructor.name ? obj.constructor.name : '';
   const objName = obj.name ? obj.name : '';
-  const type = getTypeString(obj);
-  let objSignature = '';
-  const isFunction = type === types.Function || type === types.GeneratorFunction || type === types.AsyncFunction;
-  if (isFunction) {
-    objSignature = genSignature(obj);
-  }
-  let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`;
+  const objSignature = genSignature(obj);
+  let header = constName ? `[${constName}]` : `[${typeof obj}]`;
   header = chalk.red(header);
   header += objName ? ` ${objName}` : '';
   header += objSignature ? ` ${objSignature}` : '';
@@ -239,9 +234,17 @@ function applyChalk(type, str) {
 
 function genSignature(obj) {
   let funString = '';
+  if (!isFunction(obj)) {
+    return funString;
+  }
   try {
     funString = Function.prototype.toString.call(obj);
     funString = funString.slice(funString.indexOf('('), funString.indexOf(')') + 1);
   } catch (err) {}
   return funString.slice(funString.indexOf('('), funString.indexOf(')') + 1);
+}
+
+function isFunction(obj) {
+  const type = getTypeString(obj);
+  return type === types.Function || type === types.GeneratorFunction || type === types.AsyncFunction;
 }
