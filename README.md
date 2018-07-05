@@ -17,6 +17,7 @@ Provides colourful functions to inspect JavaScript objects.
 * The `probe()` function outputs a prototype hierarchy tree to the console.
 * The `json()` function safely writes a stringified object output to the console.
 * The `yaml()` function converts objects into yaml format and outputs to the console.
+* The `ls()` function converts objects into a colourful format and outputs to the console.
 
 ## Installing
 
@@ -79,18 +80,21 @@ const secret = Symbol('Hidden Property')
 aussieSlang[secret] = 'Bogan'
 
 // Calling console-probe functions.
-cp.probe(aussieSlang) // Writes prototype tree to the console
+cp.probe(aussieSlang) // Writes a prototype tree to the console
 cp.json(aussieSlang) // Writes a JSON formatted object to the console
-cp.yaml(aussieSlang) // Writes YAML formatted object to the console
+cp.yaml(aussieSlang) // Writes a YAML formatted object to the console
+cp.ls(aussieSlang) // Writes a formatted object to the console
 
 // Adding console-probe functions to the console.
 console.probe(aussieSlang) // Throws exception 'console.probe is not a function'
 console.json(aussieSlang) // Throws exception 'console.json is not a function'
 console.yaml(aussieSlang) // Throws exception 'console.yaml is not a function'
+console.ls(aussieSlang) // Throws exception 'console.ls is not a function'
 cp.apply()
-console.probe(aussieSlang) // Writes prototype tree to the console
+console.probe(aussieSlang) // Writes a prototype tree to the console
 console.json(aussieSlang) // Writes a JSON formatted object to the console
 console.yaml(aussieSlang) // Writes a YAML formatted object to the console
+console.ls(aussieSlang) // Writes a formatted object to the console
 
 // Adding console-probe functions to an object.
 const foo = {}
@@ -98,6 +102,7 @@ cp.apply(foo)
 foo.probe(aussieSlang) // Writes prototype tree to the console
 foo.json(aussieSlang) // Writes a JSON formatted object to the console
 foo.yaml(aussieSlang) // Writes a YAML formatted object to the console
+foo.ls(aussieSlang) // Writes a formatted object to the console
 
 ```
 
@@ -117,17 +122,22 @@ _Note: Type detection errors will display as `[Unknown]`._
 
 ![Example Yaml Output][example-yaml-image]
 
+### The `ls` function output:
+
+![Example ls Output][example-ls-image]
+
 ## Rational
 
 There are many amazing packages on `npm`. Many of those packages are not well documented. Rather than go straight to reading source code I wrote `console-probe` to inspect objects and discover methods and properties. Using Node.js with inspect is often a better approach however I don't always have it running; this is when `console-probe` comes in handy.
 
 ## Function
 
-The `console-probe` package provides three functions that will write to the console:
+The `console-probe` package provides four functions that will write to the console:
 
 * `probe(obj)`: The probe function uses `Object.getOwnPropertyNames()` and `Object.getOwnPropertySymbols()` to enumerate the members of an object through its prototype hierarchy. Using the type list from [MDN][jstypes-url] the types are detected. After a little formatting the result is written to the console using the [archy][archy-url] package with some colour added by [chalk][chalk-url].
 * `json(obj, replacer, spacer, color)`: Uses [fast-safe-stringify][fss-url] and [json-colorizer][json-colorizer-url] to safely write the stringified object out to the console.
 * `yaml(obj, options, indentation)`: A simple wrapper around the [prettyjson][prettyjson-url] package render function.
+* `ls(obj)`: A simple wrapper around the [jsome][jsome-url] package render function.
 
 ## API
 
@@ -209,6 +219,31 @@ cp.yaml({ key: 'value' })
 // key: value
 ```
 
+### `ls` Function
+
+__Description:__ This function wraps the [jsome][jsome-url] render function and writes the result to the console. The result is a colorized formatted representation of the object data.
+
+__Signature:__ `ls(object)`
+
+__Parameter:__
+
+* `object` can be any object you wish to display.
+
+__Details:__
+
+* The `ls` function is simply a wrapper around the [jsome][jsome-url] package.
+* See the [jsome][jsome-url] documentation for more detail.
+
+__Example:__
+
+```js
+const cp = require('console-probe')
+cp.ls({ key: 'value' })
+// Outputs the following to the console:
+// {
+//   key: "value"
+// }
+```
 ### `apply` Function
 
 __Signature:__ `apply(object)`
@@ -226,18 +261,18 @@ __Example:__
 ```js
 const cp = require('console-probe')
 cp.apply()
-// console now has a probe, json, and yaml function.
+// console now has a probe, json, yaml, and ls functions.
 
 const foo = {}
 cp.apply(foo)
-// foo now has a probe, json, and yaml function.
+// foo now has a probe, json, yaml, and ls functions.
 ```
 
 Another approach to simply augment the console:
 
 ```js
 require('console-probe').apply()
-// console.probe, console.json, and console.yaml are now ready for use.
+// console.probe, console.json, console.yaml, and console.ls are now ready for use.
 ```
 
 ## About the Owner
@@ -264,7 +299,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
-- v3.2.2 [2018-07-05]: Fixed README badges. Fixed null/undefined error. Refactored.
+- v3.3.0 [2018-07-05]: Added new method `ls`. Fixed README badges. Fixed null/undefined error.
 - v3.2.1 [2018-07-05]: Added `BigInt` type support. Updated dependencies.
 - v3.2.0 [2018-03-02]: Multiple type support. Probe format updated.
 - v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.
@@ -300,8 +335,10 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-probe.png
 [example-json-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-json.png
 [example-yaml-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-yaml.png
+[example-ls-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-ls.png
 [json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [prettyjson-url]: https://www.npmjs.com/package/prettyjson
 [json-colorizer-url]: https://www.npmjs.com/package/json-colorizer
 [yaml-url]: http://yaml.org/
+[jsome-url]: https://www.npmjs.com/package/jsome
 [jstypes-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects

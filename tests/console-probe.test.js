@@ -83,6 +83,14 @@ describe('suppressed log tests', () => {
     expect(spyLog).toHaveBeenCalledTimes(11)
     console.yaml(aussieSlang)
     expect(spyLog).toHaveBeenCalledTimes(12)
+    console.ls()
+    expect(spyLog).toHaveBeenCalledTimes(13)
+    console.ls(undefined)
+    expect(spyLog).toHaveBeenCalledTimes(14)
+    console.ls(null)
+    expect(spyLog).toHaveBeenCalledTimes(15)
+    console.ls(aussieSlang)
+    expect(spyLog).toHaveBeenCalledTimes(16)
   })
 
   test('console-probe functions appended to another object', () => {
@@ -100,6 +108,9 @@ describe('suppressed log tests', () => {
     const yamlSpy = jest.spyOn(thing, 'yaml')
     thing.yaml(aussieSlang)
     expect(yamlSpy).toHaveBeenCalledTimes(1)
+    const lsSpy = jest.spyOn(thing, 'ls')
+    thing.ls(aussieSlang)
+    expect(lsSpy).toHaveBeenCalledTimes(1)
   })
 
   test('console-probe stand-alone functions', () => {
@@ -112,6 +123,9 @@ describe('suppressed log tests', () => {
     expect(typeof cp.yaml).toBe('function')
     expect(cp.yaml).toBe(console.yaml)
     expect(cp.yaml.toString()).toBe(console.yaml.toString())
+    expect(typeof cp.ls).toBe('function')
+    expect(cp.ls).toBe(console.ls)
+    expect(cp.ls.toString()).toBe(console.ls.toString())
   })
 
   test('console-probe type support', () => {
@@ -156,7 +170,7 @@ describe('suppressed log tests', () => {
     expect(() => { cp.probe(function * () {}) }).not.toThrow()
     expect(() => { cp.probe(async function () {}) }).not.toThrow()
     expect(() => { cp.probe(cp) }).not.toThrow()
-    expect(spyLog).toHaveBeenCalledTimes(56)
+    expect(spyLog).toHaveBeenCalledTimes(61)
   })
 
   afterAll(() => {
@@ -166,6 +180,7 @@ describe('suppressed log tests', () => {
 
 afterAll(() => {
   console.log()
+  // cp.ls(aussieSlang) doesn't work well under jest
   cp.yaml(aussieSlang)
   cp.json(aussieSlang)
   cp.probe(aussieSlang)

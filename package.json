@@ -1,6 +1,6 @@
 {
   "name": "console-probe",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "description": "Inspect JavaScript object methods and properties in the console.",
   "main": "console-probe.js",
   "repository": {
@@ -17,7 +17,8 @@
     "upgrade": "npm run upgrade:rm && npm run upgrade:ncu && npm run upgrade:npm-install",
     "upgrade:rm": "rm node_modules -Rf",
     "upgrade:ncu": "npm-check-updates --upgradeAll",
-    "upgrade:npm-install": "npm install"
+    "upgrade:npm-install": "npm install",
+    "t": "node t.js"
   },
   "keywords": [
     "console",
@@ -49,6 +50,7 @@
     "archy": "^1.0.0",
     "chalk": "^2.4.1",
     "fast-safe-stringify": "^2.0.4",
+    "jsome": "^2.5.0",
     "json-colorizer": "^1.1.1",
     "prettyjson": "^1.2.1",
     "strip-ansi": "^4.0.0"
