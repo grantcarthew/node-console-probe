@@ -66,15 +66,12 @@ function genHeader (obj) {
   const objName = obj.name ? obj.name : ''
   const type = getTypeString(obj)
   let objSignature = ''
-  if (type === types.Function ||
-      type === types.GeneratorFunction ||
-      type === types.AsyncFunction) {
-    objSignature = genSignature(obj)
-  }
+  const isFunction = type === types.Function || type === types.GeneratorFunction || type === types.AsyncFunction
+  if (isFunction) { objSignature = genSignature(obj) }
   let header = constName.length > 0 ? `[${constName}]` : `[${typeof obj}]`
   header = chalk.red(header)
-  if (objName.length > 0) header += ` ${objName}`
-  if (objSignature.length > 0) header += ` ${objSignature}`
+  header += objName ? ` ${objName}` : ''
+  header += objSignature ? ` ${objSignature}` : ''
   return header
 }
 
