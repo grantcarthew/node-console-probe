@@ -264,7 +264,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
-- v3.2.2 [2018-07-05]: Fixed README badges.
+- v3.2.2 [2018-07-05]: Fixed README badges. Fixed null/undefined error. Refactored.
 - v3.2.1 [2018-07-05]: Added `BigInt` type support. Updated dependencies.
 - v3.2.0 [2018-03-02]: Multiple type support. Probe format updated.
 - v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.

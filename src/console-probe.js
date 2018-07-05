@@ -1,14 +1,11 @@
-const types = require('./types')
-const archy = require('archy')
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
+const archy = require('archy')
+const types = require('./types')
+const valid = require('./valid')
 
 module.exports = function probe (obj) {
-  if (obj == null) {
-    const message = chalk.red('[console-probe] Invalid Type: ')
-    console.log(message + obj)
-    return
-  }
+  if (!valid(obj)) { return }
 
   let tree = null
   let currentNode = newNode('root')
