@@ -7,6 +7,7 @@ const aussieSlang = {
   'name': 'Aussie Slang Words',
   'gday': Infinity,
   'maccas': Number.NaN,
+  'yobbo': BigInt(123),
   'arvo': undefined,
   'straya': null,
   'footy': {specky: true},
@@ -98,6 +99,7 @@ describe('suppressed log tests', () => {
     expect(() => { cp.probe() }).not.toThrow()
     expect(() => { cp.probe(Infinity) }).not.toThrow()
     expect(() => { cp.probe(Number.NaN) }).not.toThrow()
+    expect(() => { cp.probe(BigInt(0)) }).not.toThrow()
     expect(() => { cp.probe(undefined) }).not.toThrow()
     expect(() => { cp.probe(null) }).not.toThrow()
     expect(() => { cp.probe({}) }).not.toThrow()
@@ -135,7 +137,7 @@ describe('suppressed log tests', () => {
     expect(() => { cp.probe(function * () {}) }).not.toThrow()
     expect(() => { cp.probe(async function () {}) }).not.toThrow()
     expect(() => { cp.probe(cp) }).not.toThrow()
-    expect(spyLog).toHaveBeenCalledTimes(46)
+    expect(spyLog).toHaveBeenCalledTimes(47)
   })
 
   afterAll(() => {

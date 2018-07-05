@@ -20,3 +20,10 @@ function apply (obj) {
     obj.yaml = yaml
   }
 }
+
+// Adding BigInt support for JSON.stringify()
+if (global.BigInt) {
+  global.BigInt.prototype.toJSON = function (key) {
+    return this.toString()
+  }
+}

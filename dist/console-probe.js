@@ -113,6 +113,7 @@ function genPostfix(type, obj) {
       postfix = obj.message && applyChalk(type, `[${cleanString(obj.message)}]`);
       break;
     case types.Number:
+    case types.BigInt:
       postfix = applyChalk(type, `[${obj.toString()}]`);
       break;
     case types.Date:
@@ -216,6 +217,7 @@ function applyChalk(type, str) {
       break;
     // Number Types
     case types.Number:
+    case types.BigInt:
       result = chalk.blue(str);
       break;
     // Strings

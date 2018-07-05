@@ -17,6 +17,7 @@ module.exports = Object.freeze({
 
   // Numbers and Dates
   Number: 'Number',
+  BigInt: 'BigInt',
   Date: 'Date',
 
   // Text Processing
