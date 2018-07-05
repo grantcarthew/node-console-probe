@@ -2,8 +2,7 @@
 
 Inspect JavaScript object methods and properties in the console.
 
-[![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
-[![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
+[![Maintainability][cc-maintain-badge]][cc-maintain-url]
 [![Build Status][travisci-image]][travisci-url]
 [![js-standard-style][js-standard-image]][js-standard-url]
 [![NSP Status][nsp-image]][nsp-url]
@@ -265,6 +264,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v3.2.2 [2018-07-05]: Fixed README badges.
 - v3.2.1 [2018-07-05]: Added `BigInt` type support. Updated dependencies.
 - v3.2.0 [2018-03-02]: Multiple type support. Probe format updated.
 - v3.1.0 [2018-02-19]: Added colour to json. Added yaml function.
@@ -278,10 +278,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 - v1.0.1 [2018-01-23]: Updated NSP link.
 - v1.0.0 [2018-01-23]: Initial release. 
 
-[bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-console-probe/badges/score.svg
-[bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-console-probe
-[bithound-dep-image]: https://www.bithound.io/github/grantcarthew/node-console-probe/badges/dependencies.svg
-[bithound-dep-url]: https://www.bithound.io/github/grantcarthew/node-console-probe/master/dependencies/npm
+[cc-maintain-badge]: https://api.codeclimate.com/v1/badges/805e88a221e165ecda12/maintainability
+[cc-maintain-url]: https://codeclimate.com/github/grantcarthew/node-console-probe/maintainability
 [travisci-image]: https://travis-ci.org/grantcarthew/node-console-probe.svg?branch=master
 [travisci-url]: https://travis-ci.org/grantcarthew/node-console-probe
 [js-standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg

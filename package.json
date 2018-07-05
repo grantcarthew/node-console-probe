@@ -1,6 +1,6 @@
 {
   "name": "console-probe",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "Inspect JavaScript object methods and properties in the console.",
   "main": "console-probe.js",
   "repository": {
