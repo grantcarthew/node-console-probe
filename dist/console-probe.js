@@ -16,45 +16,53 @@ module.exports = function probe(obj) {
   let currentNode = newNode('root');
 
   for (; obj != null; obj = Object.getPrototypeOf(obj)) {
-    const node = newNode(genHeader(obj));
+    let node = newNode(genHeader(obj));
     node.nodes = Object.getOwnPropertyNames(obj);
     node.nodes.push(...Object.getOwnPropertySymbols(obj));
-
-    for (let i = 0; i < node.nodes.length; i++) {
-      let focusObj = null;
-      let type;
-      let isSymbolKey = getTypeString(node.nodes[i]) === types.Symbol;
-      try {
-        focusObj = obj[node.nodes[i]];
-        type = getTypeString(focusObj);
-      } catch (err) {
-        type = types.Unknown;
-        focusObj = err;
-      }
-      let prefix = applyChalk(type, `[${type}]`);
-      const postfix = genPostfix(type, focusObj);
-      if (isSymbolKey) {
-        const symDesc = getSymbolDescription(node.nodes[i]);
-        prefix = applyChalk(types.Symbol, `[${types.Symbol}]`) + prefix;
-        if (symDesc.length > 0) {
-          node.nodes[i] = `${prefix} ${symDesc} ${postfix}`;
-        } else {
-          node.nodes[i] = `${prefix} ${postfix}`;
-        }
-      } else {
-        node.nodes[i] = `${prefix} ${node.nodes[i]} ${postfix}`;
-      }
-    }
-
-    node.nodes.sort((a, b) => {
-      return stripAnsi(a).localeCompare(stripAnsi(b));
-    });
+    node = processNode(node, obj);
     tree = tree || node;
     currentNode.nodes.push(node);
     currentNode = node;
   }
   console.log(archy(tree));
 };
+
+function processNode(node, obj) {
+  for (let i = 0; i < node.nodes.length; i++) {
+    let focusObj = null;
+    let type;
+    try {
+      focusObj = obj[node.nodes[i]];
+      type = getTypeString(focusObj);
+    } catch (err) {
+      type = types.Unknown;
+      focusObj = err;
+    }
+    node.nodes[i] = getNodeString(type, focusObj, node.nodes[i]);
+  }
+  node.nodes.sort((a, b) => {
+    return stripAnsi(a).localeCompare(stripAnsi(b));
+  });
+  return node;
+}
+
+function getNodeString(type, focusObj, node) {
+  let prefix = applyChalk(type, `[${type}]`);
+  const postfix = genPostfix(type, focusObj);
+  const isSymbolKey = getTypeString(node) === types.Symbol;
+  if (isSymbolKey) {
+    const symDesc = getSymbolDescription(node);
+    prefix = applyChalk(types.Symbol, `[${types.Symbol}]`) + prefix;
+    if (symDesc.length > 0) {
+      node = `${prefix} ${symDesc} ${postfix}`;
+    } else {
+      node = `${prefix} ${postfix}`;
+    }
+  } else {
+    node = `${prefix} ${node} ${postfix}`;
+  }
+  return node;
+}
 
 function newNode(label) {
   return {
