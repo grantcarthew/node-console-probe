@@ -44,22 +44,20 @@ function processNode (node, obj) {
   return node
 }
 
-function getNodeString (type, focusObj, node) {
+function getNodeString (type, obj, node) {
   let prefix = applyChalk(type, `[${type}]`)
-  const postfix = genPostfix(type, focusObj)
+  const postfix = genPostfix(type, obj)
   const isSymbolKey = getTypeString(node) === types.Symbol
   if (isSymbolKey) {
     const symDesc = getSymbolDescription(node)
     prefix = applyChalk(types.Symbol, `[${types.Symbol}]`) + prefix
-    if (symDesc.length > 0) {
-      node = `${prefix} ${symDesc} ${postfix}`
+    if (symDesc) {
+      return `${prefix} ${symDesc} ${postfix}`
     } else {
-      node = `${prefix} ${postfix}`
+      return `${prefix} ${postfix}`
     }
-  } else {
-    node = `${prefix} ${node} ${postfix}`
   }
-  return node
+  return `${prefix} ${node} ${postfix}`
 }
 
 function newNode (label) {
@@ -107,8 +105,8 @@ function genPostfix (type, obj) {
       break
     case types.Symbol:
       const symDesc = getSymbolDescription(obj)
-      if (symDesc.length > 0) {
-        postfix = applyChalk(type, `[desc: ${getSymbolDescription(obj)}]`)
+      if (symDesc) {
+        postfix = applyChalk(type, `[desc: ${symDesc}]`)
       }
       break
     case types.Error:
