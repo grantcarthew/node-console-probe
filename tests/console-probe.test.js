@@ -2,6 +2,7 @@ const cp = require('../index')
 const arrLen = 2
 const SharedArrayBuffer = global.SharedArrayBuffer ? global.SharedArrayBuffer : function () {}
 const Atomics = global.Atomics ? global.Atomics : Promise.resolve()
+const BigInt = global.BigInt ? global.BigInt : function () {}
 
 const aussieSlang = {
   'name': 'Aussie Slang Words',
