@@ -335,7 +335,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [example-probe-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-probe.png
 [example-json-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-json.png
 [example-yaml-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-yaml.png
-[example-ls-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/b7f56e39/images/aussieslang-ls.png
+[example-ls-image]: https://cdn.rawgit.com/grantcarthew/node-console-probe/4ea69e0c/images/aussieslang-ls.png
 [json-stringify-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
 [prettyjson-url]: https://www.npmjs.com/package/prettyjson
 [json-colorizer-url]: https://www.npmjs.com/package/json-colorizer
