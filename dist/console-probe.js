@@ -72,7 +72,7 @@ function newNode(label) {
 
 function genHeader(obj) {
   const constName = obj.constructor.name ? obj.constructor.name : '';
-  let objName = isGetter(obj, 'name') ? applyChalk(types.Getter, `[${types.Getter}] ()`) : '';
+  let objName = isGetter(obj, 'name') ? applyChalk(types.Getter, `[${types.Getter}] name ()`) : '';
   try {
     objName = obj.name && obj.name;
   } catch (err) {}

@@ -298,6 +298,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v3.3.2 [2019-10-14]: Added 'name' to the name getter.
 - v3.3.1 [2019-10-14]: Fixed Getter support (#5). Removed NSP from readme.
 - v3.3.0 [2018-07-05]: Added new method `ls`. Fixed README badges. Fixed null/undefined error.
 - v3.2.1 [2018-07-05]: Added `BigInt` type support. Updated dependencies.
