@@ -3,6 +3,7 @@
 module.exports = Object.freeze({
   // Type Errors
   Unknown: 'Unknown',
+  Getter: 'Getter',
 
   // Value Properties
   Infinity: 'Infinity',

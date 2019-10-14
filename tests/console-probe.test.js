@@ -5,43 +5,43 @@ const Atomics = global.Atomics ? global.Atomics : Promise.resolve()
 const BigInt = global.BigInt ? global.BigInt : function () {}
 
 const aussieSlang = {
-  'name': 'Aussie Slang Words',
-  'gday': Infinity,
-  'maccas': Number.NaN,
-  'yobbo': BigInt(123),
-  'arvo': undefined,
-  'straya': null,
-  'footy': {specky: true},
-  'biccy': (size, toppings) => {},
-  'servo': true,
-  'choccy': Symbol('Mmmmm...'),
+  name: 'Aussie Slang Words',
+  gday: Infinity,
+  maccas: Number.NaN,
+  yobbo: BigInt(123),
+  arvo: undefined,
+  straya: null,
+  footy: { specky: true },
+  biccy: (size, toppings) => {},
+  servo: true,
+  choccy: Symbol('Mmmmm...'),
   'bottle-o': Error('Cheers mate! My shout next'),
-  'tinny': 42,
-  'coppa': new Date(),
-  'tradie': 'She\'ll be right mate?',
-  'postie': /a.long.regexp.that.keeps.giving/,
-  'garbo': [1, 2, 3],
-  'muso': new Int8Array(arrLen),
-  'cabbie': new Uint8Array(arrLen),
-  'ambo': new Uint8ClampedArray(arrLen),
-  'prezzie': new Int16Array(arrLen),
-  'chrissie': new Uint16Array(arrLen),
-  'cuppa': new Int32Array(arrLen),
-  'mate': new Uint32Array(arrLen),
-  'snag': new Float32Array(arrLen),
-  'drongo': new Float64Array(arrLen),
-  'fairDinkum': new Map([['foo', 'bar']]),
-  'bonza': new Set([['foo', 'bar']]),
-  'tooRight': new WeakMap(),
-  'dunny': new WeakSet(),
-  'cobber': new ArrayBuffer(arrLen),
-  'barbie': new SharedArrayBuffer(arrLen),
-  'stickybeak': Atomics,
-  'stoked': new DataView(new ArrayBuffer(arrLen)),
-  'ripper': Promise.resolve(),
-  'mongrel': (function * () {})(),
-  'holyDooley': function * (foo, bar) {},
-  'roo': async function (foo, bar) {}
+  tinny: 42,
+  coppa: new Date(),
+  tradie: 'She\'ll be right mate?',
+  postie: /a.long.regexp.that.keeps.giving/,
+  garbo: [1, 2, 3],
+  muso: new Int8Array(arrLen),
+  cabbie: new Uint8Array(arrLen),
+  ambo: new Uint8ClampedArray(arrLen),
+  prezzie: new Int16Array(arrLen),
+  chrissie: new Uint16Array(arrLen),
+  cuppa: new Int32Array(arrLen),
+  mate: new Uint32Array(arrLen),
+  snag: new Float32Array(arrLen),
+  drongo: new Float64Array(arrLen),
+  fairDinkum: new Map([['foo', 'bar']]),
+  bonza: new Set([['foo', 'bar']]),
+  tooRight: new WeakMap(),
+  dunny: new WeakSet(),
+  cobber: new ArrayBuffer(arrLen),
+  barbie: new SharedArrayBuffer(arrLen),
+  stickybeak: Atomics,
+  stoked: new DataView(new ArrayBuffer(arrLen)),
+  ripper: Promise.resolve(),
+  mongrel: (function * () {})(),
+  holyDooley: function * (foo, bar) {},
+  roo: async function (foo, bar) {}
 }
 const secret = Symbol('Hidden Property')
 aussieSlang[secret] = 'Bogan'
@@ -171,6 +171,17 @@ describe('suppressed log tests', () => {
     expect(() => { cp.probe(async function () {}) }).not.toThrow()
     expect(() => { cp.probe(cp) }).not.toThrow()
     expect(spyLog).toHaveBeenCalledTimes(61)
+  })
+
+  test('console-probe class symbol getter support', () => {
+    const _state = Symbol('state')
+    class Thing {
+      constructor () { this[_state] = { name: 'foo', tag: 'bar' } }
+      get name () { return this[_state].name }
+      get tag () { return this[_state].tag }
+    }
+    const thing = new Thing()
+    expect(() => { cp.probe(thing) }).not.toThrow()
   })
 
   afterAll(() => {

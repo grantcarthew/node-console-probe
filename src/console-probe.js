@@ -25,12 +25,14 @@ module.exports = function probe (obj) {
 function processNode (node, obj) {
   for (let i = 0; i < node.nodes.length; i++) {
     let focusObj = null
+    let propertyIsGetter = false
     let type
     try {
+      propertyIsGetter = isGetter(obj, node.nodes[i])
       focusObj = obj[node.nodes[i]]
       type = getTypeString(focusObj)
     } catch (err) {
-      type = types.Unknown
+      type = propertyIsGetter ? types.Getter : types.Unknown
       focusObj = err
     }
     node.nodes[i] = getNodeString(type, focusObj, node.nodes[i])
@@ -66,13 +68,19 @@ function newNode (label) {
 
 function genHeader (obj) {
   const constName = obj.constructor.name ? obj.constructor.name : ''
-  const objName = obj.name ? obj.name : ''
+  let objName = isGetter(obj, 'name') ? applyChalk(types.Getter, `[${types.Getter}] ()`) : ''
+  try { objName = obj.name && obj.name } catch (err) { }
   const objSignature = genSignature(obj)
   let header = constName ? `[${constName}]` : `[${typeof obj}]`
   header = chalk.red(header)
   header += objName ? ` ${objName}` : ''
   header += objSignature ? ` ${objSignature}` : ''
   return header
+}
+
+function isGetter (obj, propertyName) {
+  const descriptor = Object.getOwnPropertyDescriptor(obj, propertyName)
+  return !!(descriptor && descriptor.get && typeof descriptor.get === 'function')
 }
 
 function getTypeString (obj) {
@@ -82,6 +90,7 @@ function getTypeString (obj) {
 
 function genPostfix (type, obj) {
   let postfix = ''
+  let symDesc = ''
   switch (type) {
     case types.Infinity:
     case types.NaN:
@@ -94,14 +103,13 @@ function genPostfix (type, obj) {
     case types.Function:
     case types.GeneratorFunction:
     case types.AsyncFunction:
-      const signature = genSignature(obj)
-      postfix = applyChalk(type, signature)
+      postfix = applyChalk(type, genSignature(obj))
       break
     case types.Boolean:
       postfix = applyChalk(type, `[${obj.toString()}]`)
       break
     case types.Symbol:
-      const symDesc = getSymbolDescription(obj)
+      symDesc = getSymbolDescription(obj)
       if (symDesc) {
         postfix = applyChalk(type, `[desc: ${symDesc}]`)
       }
@@ -150,7 +158,7 @@ function genPostfix (type, obj) {
 }
 
 function cleanString (value) {
-  let str = value.replace(/(?:\r\n|\r|\n)/g, '')
+  const str = value.replace(/(?:\r\n|\r|\n)/g, '')
   return limitString(str)
 }
 
@@ -205,6 +213,7 @@ function applyChalk (type, str) {
       result = chalk.cyan(str)
       break
     // Functions and Control Objects
+    case types.Getter:
     case types.Function:
     case types.Promise:
     case types.Generator:

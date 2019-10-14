@@ -5,7 +5,6 @@ Inspect JavaScript object methods and properties in the console.
 [![Maintainability][cc-maintain-badge]][cc-maintain-url]
 [![Build Status][travisci-image]][travisci-url]
 [![js-standard-style][js-standard-image]][js-standard-url]
-[![NSP Status][nsp-image]][nsp-url]
 [![Patreon Donation][patreon-image]][patreon-url]
 
 ![Event Emitter Example][example-eventemitter-image]
@@ -299,6 +298,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v3.3.1 [2019-10-14]: Fixed Getter support (#5). Removed NSP from readme.
 - v3.3.0 [2018-07-05]: Added new method `ls`. Fixed README badges. Fixed null/undefined error.
 - v3.2.1 [2018-07-05]: Added `BigInt` type support. Updated dependencies.
 - v3.2.0 [2018-03-02]: Multiple type support. Probe format updated.
@@ -322,8 +322,6 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [mppg-url]: https://github.com/grantcarthew/node-console-probe
 [bithound-code-image]: https://www.bithound.io/github/grantcarthew/node-console-probe/badges/code.svg
 [bithound-code-url]: https://www.bithound.io/github/grantcarthew/node-console-probe
-[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/8559f978-a8a7-4f6a-afdc-49bb319ad947/badge
-[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/8559f978-a8a7-4f6a-afdc-49bb319ad947
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
 [nodei-npm-image]: https://nodei.co/npm/console-probe.png?downloads=true&downloadRank=true&stars=true
